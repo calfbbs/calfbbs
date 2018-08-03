@@ -1,0 +1,168 @@
+{{ include("common/header.html")}}
+<div class="layui-container fly-marginTop">
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user">
+            <ul class="layui-tab-title">
+                <li><a href="{{G.url('app/login/index')}}">登入</a></li>
+                <li class="layui-this">找回密码</li>
+            </ul>
+            <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-btn-container" style="margin: 10px 0;">
+                        <a href="{{G.url('app/login/forget')}}" class="layui-btn layui-btn layui-btn-primary layui-btn-sm">通过邮箱找回</a>
+                        <a href="{{G.url('app/login/forget_mobile')}}" class="layui-btn layui-btn-sm">通过手机找回</a>
+                    </div>
+                    <div class="layui-form layui-form-pane">
+                        <form method="post">
+                            <div class="layui-form-item">
+                                <label for="L_phone" class="layui-form-label">手机</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="L_phone" name="mobile" required lay-verify="phone"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label for="sms_code" class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="sms_code" name="sms_code" required=""
+                                           lay-verify="required" placeholder="请输入手机验证码" autocomplete="off"
+                                           class="layui-input">
+
+                                </div>
+                                <div class="layui-form-mid" style="padding:0px 0!important;">
+                                    <button type="button" class="layui-btn layui-btn-normal" id="FLY-getvercode">获取验证码
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="L_vercode" class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="L_vercode" name="vercode" required lay-verify="required"
+                                           placeholder="请回答后面的验证码" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid" style="padding:0px 0!important;margin-top:-0.5px;">
+                                    <img onclick="javascript:re_captcha();" src="{{ G.url('app/login/captcha') }}"
+                                         alt="验证码" title="刷新图片" width="100" height="36"
+                                         id="c2c98f0de5a04167a9e427d883690ff6" border="0">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['util', 'laydate', 'layer', 'jquery'], function () {
+
+        var util = layui.util
+            , laydate = layui.laydate
+            , layer = layui.layer;
+
+        var thisTimer, setCountdown = function (y, M, d, H, m, s) {
+            var endTime = new Date(y, M || 0, d || 1, H || 0, m || 0, s || 0) //结束日期
+                , serverTime = new Date(); //假设为当前服务器时间，这里采用的是本地时间，实际使用一般是取服务端的
+            clearTimeout(thisTimer);
+            util.countdown(endTime, serverTime, function (date, serverTime, timer) {
+                var str = date[3] + '秒后可重新获取';
+                lay('#FLY-getvercode').html(str);
+                lay('#FLY-getvercode').attr("class", 'layui-btn layui-btn-disabled');
+                thisTimer = timer;
+                if ((date[0] | date[1] | date[2] | date[3]) == 0) {
+                    lay('#FLY-getvercode').html('获取验证码');
+                    lay('#FLY-getvercode').attr("class", 'layui-btn layui-btn-normal');
+                }
+            });
+        };
+
+        $("#FLY-getvercode").click(function () {
+            var mobile = $("#L_phone").val()
+            $.ajax({
+                url: "{{G.url('app/login/getvercode')}}",//当前ajax请求的地址
+                type: 'post',//请求的方式
+                async: true,//是否异步  默认为异步
+                data: {mobile: mobile},//当前ajax请求的参数  
+                dataType: "json",
+                success: function (data) {//发送成功时的代码执行
+
+                    if (data.code == 1001) {
+                        layer.msg("验证码已发送至您的手机，请注意查收", {icon: 1});
+                        var date = new Date();
+                        var year = date.getFullYear();
+                        var month = date.getMonth();
+                        var day = date.getDate();
+                        var hour = date.getHours();
+                        var minute = date.getMinutes();
+                        var second = date.getSeconds();
+                        setCountdown(year, month, day, hour, minute + 1, second);
+                    } else {
+                        layer.msg("获取验证码失败", {icon: 5});
+                    }
+                    //re_captcha();
+                },
+                error: function () {//失败时的代码执行
+                    layer.msg("获取验证码失败", {icon: 5});
+                    //re_captcha();
+                }
+
+            })
+        });
+    });
+
+    //Demo
+    layui.use(['layer', 'form'], function () {
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            var field = data.field;
+            $.ajax({
+                url: "{{G.url('app/login/forget_mobile')}}",
+                type: 'POST',//请求的方式
+                async: true,//是否异步  默认为异步
+                data: field,//当前ajax请求的参数  
+                dataType: "json",
+                success: function (data) {//发送成功时的代码执行
+                    if (data.code == 1001) {
+                        layer.msg("操作成功", {
+                            icon: 1
+                        });
+                        setTimeout("window.location='" + data.data + "'", 1500);
+                    }
+
+                    if (data.code == 2001) {
+                        if (data.data.mobile) {
+                            layer.msg(data.data.mobile, {icon: 5});
+                        } else {
+                            layer.msg(data.data, {icon: 5});
+                        }
+                    }
+
+                    re_captcha();
+                },
+                error: function () {//失败时的代码执行
+                    layer.msg("找回密码失败", {icon: 5});
+                    re_captcha();
+                }
+
+            });
+            return false;
+        });
+    });
+
+
+    /**
+     * 刷新验证码
+     */
+    function re_captcha() {
+        var url = "{{ G.url('app/login/captcha',{'captcha':'random'}) }}";
+        var random = Math.random();
+        url = url.replace("random", random);//使用js自带函数进行变量替换
+        document.getElementById('c2c98f0de5a04167a9e427d883690ff6').src = url;
+    }
+</script>
+{{ include("common/footer.html")}}

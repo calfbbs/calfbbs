@@ -1,0 +1,184 @@
+{{ include("common/header.html")}}
+<div class="layui-container fly-marginTop">
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user">
+            <ul class="layui-tab-title">
+                <li class="layui-this">登入</li>
+                <li><a href="{{G.url('app/login/signup')}}">注册</a></li>
+            </ul>
+            <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form layui-form-pane">
+                        <form method="post">
+                            <div class="layui-form-item">
+                                <label for="L_loginName" class="layui-form-label">手机/邮箱</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="L_loginName" name="loginName" required lay-verify="required"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux" style="padding:9px 0!important"> 使用手机或者邮箱中的任意一个均可（若采用手机，请确保你的帐号已绑定过该手机） </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="L_pass" class="layui-form-label">密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" id="L_pass" name="password" required lay-verify="required"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <!-- <div class="layui-form-item"> 
+                                <label for="L_vercode" class="layui-form-label">人类验证</label> 
+                                <div class="layui-input-inline"> 
+                                    <input type="text" id="L_vercode" name="vercode" required="" lay-verify="required" placeholder="请回答后面的问题" autocomplete="off" class="layui-input"> 
+                                </div> 
+                                <div class="layui-form-mid" style="padding:9px 0!important"> 
+                                    <span style="color: #c00;">calfbbs 的作者是谁？</span> 
+                                </div> 
+                            </div> -->
+
+                            <div class="layui-form-item">
+                                <label for="L_vercode" class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline">
+                                  <input type="text" id="L_vercode" name="vercode"  required lay-verify="required" placeholder="请回答后面的验证码" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid" style="padding:0px 0!important;margin-top:-2.5px;">
+                                  <img  onclick="javascript:re_captcha();" src="{{ G.url('app/login/captcha') }}"  alt="验证码" title="刷新图片" width="100" height="45" id="c2c98f0de5a04167a9e427d883690ff6" border="0">
+                                </div>
+                              </div>
+
+                            
+                            <div class="layui-form-item">
+                                <div class="layui-btn" onClick="login();return false;">立即登录</div>
+                                <span style="padding-left:20px;">
+                  <a href="{{ G.url('app/login/forget') }}">忘记密码？</a>
+                </span>
+
+
+              </div>
+              {% if modules[0].dir_name == 'login' %}
+              <div class="layui-form-item fly-form-app">
+                <span>或者使用社交账号登入</span>
+                {% if config['qq']['QQ_STATUS'] == 'on' %}
+                <a href="{{G.url('app/registers/login',{'type':'qq'})}}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
+                {% endif %}
+                {% if config['weixin']['WEIXIN_STATUS'] == 'on' %}
+                <a href="{{G.url('app/registers/login',{'type':'weixin'})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" class="mine-icon" title="微信登入"><i class="mine-icon" style="font-size: 20px;color:green;">&#xe628;</i></a>
+                {% endif %}
+              </div>
+              {% endif %}              
+
+            </form>
+          </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    /**
+     * 刷新验证码
+     */
+    function re_captcha() {
+        var url = "{{ G.url('app/login/captcha',{'captcha':'random'}) }}";
+        var random = Math.random();
+        url = url.replace("random", random);//使用js自带函数进行变量替换
+        document.getElementById('c2c98f0de5a04167a9e427d883690ff6').src = url;
+    }
+    
+
+    function login() {
+
+
+        layui.use('layer', function () {
+
+            layui.use('form', function () {
+                var form = layui.form;
+            });
+            var layer = layui.layer;
+            var type;
+            
+            var loginName=$('input[name=loginName]').val();
+            var password = $('input[name=password]').val();
+            var vercode = $('input[name=vercode]').val();
+
+            if (!loginName) {
+                layer.msg("手机或邮箱不能为空");
+                return false;
+            }else if(loginName.match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)){
+                type='email';
+
+            }else if(loginName.match(/^1[0-9]{10}$/)){ 
+                type='mobile';
+            }else{
+                layer.msg("请输入正确格式");
+            }
+            if (!password) {
+                layer.msg("密码不能为空");
+                return false;
+            }
+
+            if (!vercode) {
+                layer.msg("请输入验证码");
+                return false;
+            }
+
+            if (type == "mobile") {
+                data = {mobile: loginName, password: password, type: "mobile", vercode: vercode};
+            } else if (type == "email") {
+                data = {email: loginName, password: password, type: "email", vercode: vercode};
+            }
+
+            
+
+            $.ajax({
+                //url: "{{G.url('app/login/login_sms')}}",//当前ajax请求的地址
+                url: "{{G.url('app/login/login')}}",//当前ajax请求的地址
+                type: 'post',//请求的方式
+                async: true,//是否异步  默认为异步
+                data: data,//当前ajax请求的参数  
+                dataType: "json",
+                success: function (data) {//发送成功时的代码执行
+                    if (data.code == 2001) {
+                        if (data.data.email) {
+                            layer.msg("登陆失败:" + data.data.email);
+                        } else if (data.data.mobile) {
+                            layer.msg("登陆失败:" + data.data.mobile);
+                        } else if (data.data.username) {
+                            layer.msg("登陆失败:" + data.data.username);
+                        } else {
+                            layer.msg("登陆失败:" + JSON.stringify(data.data));
+                        }
+                        re_captcha();
+                        return false;
+                    }
+                    if (data.code == 1001) {
+                        layer.msg(data.data + "正在跳转........");
+                        setTimeout(function () {
+                            window.location.href = "{{G.url('app/index/index')}}";
+                        }, 3000);
+
+                    } else {
+                        layer.msg("登陆失败，请重新尝试登陆");
+
+                    }
+                    re_captcha();
+                },
+                error: function () {//失败时的代码执行
+                    layer.msg("登陆失败，请重新尝试登陆");
+                    re_captcha();
+                }
+
+            })
+
+        });
+
+
+    }
+
+    
+
+</script>
+
+
+{{ include("common/footer.html")}}

@@ -1,0 +1,128 @@
+{{ include("common/header.html")}}
+
+<div class="fly-home fly-panel" style="background-image: url();">
+  <img src="{{_G['ATTACHMENT_ROOT']}}/{{user.avatar}}" alt="贤心">
+  <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
+  <h1>
+    {{user.username}}
+    <i class="iconfont icon-nan"></i>
+    <!-- <i class="iconfont icon-nv"></i>  -->
+  <!--  <i class="layui-badge fly-badge-vip">VIP3</i>-->
+    <!--
+    <span style="color:#c00;">（管理员）</span>
+    <span style="color:#5FB878;">（社区之光）</span>
+    <span>（该号已被封）</span>
+    -->
+  </h1>
+
+ <!-- <p style="padding: 10px 0; color: #5FB878;">认证信息：layui 作者</p>-->
+
+  <p class="fly-home-info">
+    <!--<i class="iconfont icon-kiss" title="飞吻"></i><span style="color: #FF7200;">66666 飞吻</span>-->
+    <i class="iconfont icon-shijian"></i><span>{{user.create_time|date('Y-m-d')}} 加入</span>
+  <!--  <i class="iconfont icon-chengshi"></i><span>来自杭州</span>-->
+  </p>
+
+  <p class="fly-home-sign">（{{user.signature}}）</p>
+
+ <!-- <div class="fly-sns" data-user="">
+    <a href="javascript:;" class="layui-btn layui-btn-primary fly-imActive" data-type="addFriend">加为好友</a>
+    <a href="javascript:;" class="layui-btn layui-btn-normal fly-imActive" data-type="chat">发起会话</a>
+  </div>-->
+
+</div>
+
+<div class="layui-container">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md6 fly-home-jie">
+      <div class="fly-panel">
+        <h3 class="fly-panel-title">{{user.username}} 最近的提问</h3>
+        <ul class="jie-row">
+          <!--<li>
+            <span class="fly-jing">精</span>
+            <a href="" class="jie-title"> 基于 layui 的极简社区页面模版</a>
+            <i>刚刚</i>
+            <em class="layui-hide-xs">1136阅/27答</em>
+          </li>-->
+          {% if questionsList %}
+            {% for data in questionsList %}
+            <li>
+              <a href="{{G.url('app/detail/index',{'id':data.id})}}" class="jie-title"> {{data.title}}</a>
+              <i class="time_str">{{data.create_time}}</i>
+              <em class="layui-hide-xs">{{data.visits_count}}阅/{{data.reply_count}}答</em>
+            </li>
+            {% endfor %}
+          {%else%}
+           <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><i style="font-size:14px;">没有发表任何求解</i></div>
+          {%endif%}
+
+        </ul>
+      </div>
+    </div>
+    
+    <div class="layui-col-md6 fly-home-da">
+      <div class="fly-panel">
+        <h3 class="fly-panel-title">{{user.username}} 最近的回答</h3>
+        <ul class="home-jieda">
+          {% if answersList %}
+            {% for data in answersList %}
+            <li>
+            <p>
+            <span class="time_str">{{data.create_time}}</span>
+            在<a href="{{G.url('app/detail/index',{'id':data.reid})}}" target="_blank">{{data.title}}</a>中回答：
+            </p>
+            <div class="home-dacontent">
+              {{ data.reply_text|e('html_attr') }}
+
+            </div>
+            </li>
+            {% endfor %}
+          {%else%}
+           <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><span>没有回答任何问题</span></div>
+
+          {%endif%}
+
+     <!--   <li>
+          <p>
+          <span>5分钟前</span>
+          在<a href="" target="_blank">在Fly社区用的是什么系统啊?</a>中回答：
+          </p>
+          <div class="home-dacontent">
+            Fly社区采用的是NodeJS。分享出来的只是前端模版
+          </div>
+        </li>-->
+
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    layui.use(['util','jquery'], function(){
+        var util = layui.util;
+        var $ = layui.$ //由于layer弹层依赖jQuery，所以可以直接得到
+        var setTimeAgo = function(y, M, d, H, m, s){
+            var str = util.timeAgo(new Date(y, M||0, d||1, H||0, m||0, s||0));
+            return str
+        };
+        $(function(){
+            $(".time_str").each(function(){
+                var timestamp=$(this).text()
+                //console.log($(this).text())
+                var date = new Date();
+                date.setTime(timestamp * 1000);
+                var year  = date.getFullYear();
+                var month  = date.getMonth();
+                var day   = date.getDate();
+                var hour  = date.getHours();
+                var minute = date.getMinutes();
+                var second = date.getSeconds();
+                var str=setTimeAgo(year,month,day,hour,minute,second);
+                console.log(str)
+                $(this).html(str)
+            });
+        })
+    });
+</script>
+{{ include("common/footer.html")}}

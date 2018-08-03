@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{{title}}</title>
+    <meta name="keywords" content="{{keywords}}">
+    <meta name="description" content="{{description}}">
+    <link rel="stylesheet" href="{{_G['APP']}}/resource/css/admin.css">
+    <link rel="stylesheet" href="{{_G['APP']}}/resource/layui/css/layui.css">
+    <script src="{{_G['APP']}}/resource/layui/layui.js"></script>
+    <script src="{{_G['APP']}}/resource/js/calfbbs.js"></script>
+
+
+    <style>
+        .navleft-logo{line-height: 60px;padding-left:30px;color:#FFF;}
+        .navleft-logo a{font-size: 1.7rem;font-weight: 400;}
+        .navright .navBase{font-size: 1.05rem;font-family: "微软雅黑";font-weight: 300}
+    </style>
+</head>
+<body>
+<div class="header layui-row">
+    <div class="layui-col-md2 navleft-logo" ><a  href="{{ G.url('admin/index/index')}}"> Calfbbs</a></div>
+    <ul class="layui-nav layui-col-md9 layui-bg-green">
+        <li class="layui-nav-item navright ">
+            <a  class="navBase" href="{{ G.url('admin/index/index')}}" >基础</a>
+        </li>
+        <li class="layui-nav-item navright">
+            <a class="navBase" href="{{ G.url('admin/index/setting')}}">设置</a>
+        </li>
+        <li class="layui-nav-item navright" >
+            <a class="navBase" >扩展</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a  href="{{ G.url('admin/modules/modulesList')}}">已安装扩展</a></dd>
+                <dd><a href="{{G.url('admin/modules/uninstallModulesList')}}">未安装扩展</a></dd>
+            </dl>
+        </li>
+
+        <li class="layui-nav-item " style="float:right;">
+            <a href=""><img src="http://t.cn/RCzsdCq" class="layui-nav-img">{{userinfo.username}}</a>
+            <dl class="layui-nav-child">
+                <dd><a href="{{ G.url('admin/setting/password')}}">修改密码</a></dd>
+                <!--<dd><a href="javascript:;">安全管理</a></dd>-->
+                <dd><a href="{{ G.url('admin/login/loginout')}}">退出</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" style="float:right;">
+            <a id="clearcache" href="javascript:clear()">清除缓存<span class="-dot"></span></a>
+        </li>
+        <li class="layui-nav-item" style="float:right;">
+            <a href="{{_G['APP_URL']}}" target="_blank">社区主页<span class="layui-badge-dot"></span></a
+        </li>
+
+    </ul>
+</div>
+
+
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+    layui.use('form', function () {
+        var form = layui.form;
+
+
+    });
+
+    //清除缓存{{ G.url('admin/files/dirName')}}
+        function clear() {
+
+            var path = "{{_G['CALFBB']}}./data/cache";
+
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+            {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp=new XMLHttpRequest();
+            }
+            else
+            {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    layer.msg("主人、缓存已全部干掉！");
+
+
+                }
+            }
+            xmlhttp.open("GET","{{ G.url('admin/files/dirName')}}",true);
+            xmlhttp.send();
+        }
+</script>

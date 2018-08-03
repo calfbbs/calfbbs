@@ -1,0 +1,276 @@
+
+{{ include("common/header.html")}}
+<div class="admin">
+    {{ include("common/nav.html")}}
+    <link rel="stylesheet" href="{{_G['APP']}}/resource/wangEditor/css/wangEditor.min.css">
+    <script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{_G['APP']}}/resource/wangEditor/js/wangEditor.min.js"></script>
+    <div class="aright">
+        <style type="text/css">
+            .tpt_sels a{padding-right:15px;position:relative}
+            .tpt_sels a{padding:0 20px 0 8px;color:#3B6268;background:#FFFFBA;border:1px #F8E06E solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_pres a.selected{padding:0 8px;color:#3B6268;background:#FFFFBA;border:1px #F8E06E solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_pres a{padding:0 8px;color:#fff;background:#5AC7A9;border:1px #5AC7A9 solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_sels a em{width: 12px;height: 12px;font-style: normal;display: block;position: absolute;top: 7px;right: 4px;z-index: 2;background: url(/blog/Public/img/sx.png) no-repeat 0 0;}
+            .wangEditor-menu-container .menu-item a {padding: 12px 0;}
+            .wangEditor-menu-container .menu-item {height: 37px;width: 37px;}
+            .wangEditor-menu-container .menu-group {padding: 0;}
+            .wangEditor-container {border: 1px solid #e6e6e6;}
+        </style>
+        <fieldset class="layui-elem-field layui-field-title" style="margin: 20px 30px 20px 20px;">
+            <legend>添加用户</legend>
+        </fieldset>
+
+        <form class="layui-form bform" method="post" action="{{ G.url('admin/users/add')}}" enctype="multipart/form-data">
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名字</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" required lay-verify="required" placeholder="必填内容" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" required lay-verify="required" placeholder="必填内容" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">确认密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="repass" required lay-verify="required" placeholder="必填内容" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">email</label>
+                <div class="layui-input-block">
+                    <input type="email" name="email" required lay-verify="required" placeholder="必填内容" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <!--<div class="layui-form-item" style="width: 300px;">-->
+                <!--<label class="layui-form-label">所属分类</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<select name="tid">-->
+                        <!--<option value="1">新闻资讯</option><option value="2">国内新闻</option><option value="3">国际新闻</option><option value="4">科技头条</option><option value="5">虚拟现实</option><option value="6">人工智能</option>      </select>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="layui-form-item">-->
+                <!--<label class="layui-form-label">文章作者</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="text" name="author" placeholder="请输入内容" autocomplete="off" class="layui-input">-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">所在省份</label>
+                <div class="layui-input-block">
+                    <input type="text" name="province" placeholder="请输入内容" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所在城市</label>
+                <div class="layui-input-block">
+                    <input type="text" name="city" placeholder="请输入内容" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所在地区称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="area" placeholder="请输入内容" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <!--<div class="layui-form-item">-->
+                <!--<label class="layui-form-label">审核显示</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="checkbox" title="显示" name="open" value="1" checked>-->
+
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="2" title="女" checked>
+                    <input type="radio" name="sex" value="1" title="男" >
+
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户头像</label>
+                <div class="layui-input-block">
+                    <!-- <div class="file-box">
+                        <i class="layui-icon">&#xe61f;</i>
+                        <input class="file-btn" type="button" value="选择图片">
+                        <input class="file-txt" type="text" name="avatar" id="avatar">
+                        <input class="file-file" type="file" name="pic" id="pic" size="28" onchange="document.getElementById('avatar').value=this.value" />
+                    </div> -->
+                    <div class="file-box">
+                        <button type="button" class="layui-btn" id="upload">
+                            上传图片
+                        </button>&nbsp;&nbsp;图片尺寸168X168
+                        <input type="hidden" name="avatar" value="{{data.avatar}}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <img width="115" id="avatar" style="border-radius:100%;" height="115" src="{{_G['ATTACHMENT_ROOT']}}/{{data.avatar}}" alt=""/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="status" value="1" title="普通用户" checked>
+                    <input type="radio" name="status" value="2" title="管理员" >
+                    <input type="radio" name="status" value="3" title="黑名单" >
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">个人签名</label>
+                <div class="layui-input-block">
+                    <textarea name="signature" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+            <!--<div class="layui-form-item layui-form-text">-->
+                <!--<label class="layui-form-label">帖子内容</label>-->
+                <!--<div class="layui-input-block">-->
+      <!--<textarea id="textarea" name="content" style="height:600px;width: 100%;">-->
+      <!--<p>请输入内容...</p>-->
+      <!--</textarea>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="tpt_item">
+                <!-- <input type="hidden" name="keywords" value=""> -->
+                <input type="hidden" name="submit" value="1">
+                <div id="tpt_sel" class="tpt_sels" style="margin-top: 20px;">
+		<span style="margin-bottom: 5px;float: left;margin-left: 110px;">
+				</span>
+                    <div class="layui-form-item" style="margin-bottom: 10px;">
+                        <!--<label class="layui-form-label">文章标签</label>-->
+                        <!--<div class="layui-input-block">-->
+                            <!--<input id="tpt_input" type="text" value="" autocomplete="off" class="layui-input" style="width: 400px;float: left;margin-right: 20px;">-->
+                            <!--<button class="layui-btn" id="tpt_btn" type="button" style="background: #FF5722;">添加标签</button>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div id="tpt_pre" class="tpt_pres layui-input-block cl" style="margin-bottom: 15px;">
+                    <!--<a href="javascript:;">新媒体</a><a href="javascript:;">iphone8</a><a href="javascript:;">游戏</a><a href="javascript:;">视频</a><a href="javascript:;">淘宝</a><a href="javascript:;">雷军</a><a href="javascript:;">网红</a><a href="javascript:;">人工智能</a><a href="javascript:;">大朋VR</a><a href="javascript:;">机器人</a><a href="javascript:;">小米</a><a href="javascript:;">综艺</a><a href="javascript:;">真人秀</a><a href="javascript:;">自定义</a> -->
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button class="layui-btn layui-btn-primary" onclick="history.go(-1)">返回</button>
+                    </div>
+                </div>
+
+        </form>
+        <script type="text/javascript">
+            $(function() {
+                $('#tpt_input').keydown(function(e) {
+                    if (e.which === 13) {
+                        $("#tpt_btn").click();
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                $("#tpt_sel").on('click', 'a>em', function() {
+                    var name = "keywords";
+                    var tag = $(this).parent().text();
+                    $(this).parent().remove();
+                    var tags = new Array();
+                    $("#tpt_sel").find('a').each(function() {
+                        tags.push($(this).text());
+                    });
+                    $("input[name=" + name + "]").val(tags.join(","));
+                    $("#tpt_pre a:contains('" + tag + "')").removeClass("selected");
+                });
+                $("#tpt_btn").click(function() {
+                    var name = "keywords";
+                    var tags = $.trim($("input[name=" + name + "]").val());
+                    if (tags !== "") {
+                        tags = tags.split(",");
+                    } else {
+                        tags = new Array();
+                    }
+                    var tag = $.trim($("#tpt_input").val());
+                    if (tag !== '' && $.inArray(tag, tags) === -1) {
+                        tags.push(tag);
+                        $("#tpt_pre a:contains('" + tag + "')").addClass("selected");
+                    }
+                    $("#tpt_sel").children('span').empty();
+                    $.each(tags, function(k, v) {
+                        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<em></em></a>');
+                    });
+                    $("input[name=" + name + "]").val(tags.join(","));
+                    $("#tpt_input").val('');
+                });
+                $("#tpt_pre").on('click', 'a:not(.selected)', function() {
+                    var name = "keywords";
+                    var tags = $.trim($("input[name=" + name + "]").val());
+                    if (tags !== "") {
+                        tags = tags.split(",");
+                    } else {
+                        tags = new Array();
+                    }
+                    var tag = $.trim($(this).text());
+                    if (tag !== '' && $.inArray(tag, tags) === -1) {
+                        tags.push(tag);
+                    }
+                    $("#tpt_sel").children('span').empty();
+                    $.each(tags, function(k, v) {
+                        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<em></em></a>');
+                    });
+                    $("input[name=" + name + "]").val(tags.join(","));
+                    $(this).addClass('selected');
+                });
+            });
+        </script>
+        <script>
+            layui.use('form', function(){
+                //var form = layui.form();
+            });
+        </script>
+        <!-- <script type="text/javascript">
+            var editor = new wangEditor('textarea');
+            editor.config.uploadImgUrl = "{{ G.url('admin/users/doUploadPic') }}";
+            editor.create();
+        </script> -->
+        <script>
+
+            layui.use(['form','upload'], function(){
+                var upload = layui.upload;
+                /**
+                 * 图片上传
+                 */
+                var uploadInst = upload.render({
+                    elem: '#upload' //绑定元素
+                    ,url: escapeUrl("{{ G.url('admin/files/uploadFile')}}") //上传接口
+                    ,method:"post"
+                    ,data:{width:350}
+                    ,done: function(res){
+                        console.log(res)
+                        if(res.code==1001 && res.data){
+                            $('#avatar').attr('src',"{{_G['ATTACHMENT_ROOT']}}/"+res.data);
+                            $('input[name=avatar]').val(res.data);
+                        }
+                    }
+                    ,error: function(res){
+
+                    }
+                });
+            });
+
+
+        </script>
+    </div>
+</div>
+</body>
+</html>

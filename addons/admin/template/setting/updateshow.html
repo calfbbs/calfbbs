@@ -1,0 +1,81 @@
+
+{{ include("common/header.html")}}
+<div class="admin">
+    {{ include("common/settingNav.html")}}
+    <link rel="stylesheet" href="{{_G['APP']}}/resource/wangEditor/css/wangEditor.min.css">
+    <script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{_G['APP']}}/resource/wangEditor/js/wangEditor.min.js"></script>
+    <div class="aright"  style="margin-top: 0px;">
+        <style type="text/css">
+            .tpt_sels a{padding-right:15px;position:relative}
+            .tpt_sels a{padding:0 20px 0 8px;color:#3B6268;background:#FFFFBA;border:1px #F8E06E solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_pres a.selected{padding:0 8px;color:#3B6268;background:#FFFFBA;border:1px #F8E06E solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_pres a{padding:0 8px;color:#fff;background:#5AC7A9;border:1px #5AC7A9 solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_sels a em{width: 12px;height: 12px;font-style: normal;display: block;position: absolute;top: 7px;right: 4px;z-index: 2;background: url(/blog/Public/img/sx.png) no-repeat 0 0;}
+            .wangEditor-menu-container .menu-item a {padding: 12px 0;}
+            .wangEditor-menu-container .menu-item {height: 37px;width: 37px;}
+            .wangEditor-menu-container .menu-group {padding: 0;}
+            .wangEditor-container {border: 1px solid #e6e6e6;}
+        </style>
+        <fieldset class="layui-elem-field layui-field-title" style="margin: 20px 30px 20px 20px;">
+            <legend>在线更新</legend>
+        </fieldset>
+
+        <table class="layui-table" style="width:90%;margin:0 auto;" lay-skin="line">
+            <thead>
+            <tr>
+                <th>云平台信息</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>云平台：<span class="mcolor" id="connectionStatus">
+                    {% if data['code']==0 %}
+                    <a href="" style="color:#009688">通信正常</a>
+                    {% else %}
+                     <a href="" style="color:#FF5722">通信失败</a>
+                    {% endif %}
+
+
+                </span></td>
+            </tr>
+            <!--<tr>-->
+                <!--<td>绑定账号：<a href="javascript:void(0);" class="mcolor cloudBind">（未绑定账号,点击绑定账号）</a><span class="font12" style="color:#999"> [温馨提示：只有绑定了云平台账号，才可以使用云平台服务]</span></td>-->
+            <!--</tr>-->
+            <tr>
+                <td>当前版本：{{version['tag']}}</td>
+            </tr>
+            <!--<tr>-->
+                <!--<td>授权认证：demo.hisiphp.com <span class="red">未认证</span></td>-->
+            <!--</tr>-->
+
+            <tr>
+                <td>服务器时间：{{data['data']['time']}}</td>
+            </tr>
+            <form class="layui-form" action="">
+            <!--<tr>-->
+                <!--<td>升级协议：<a>我已经阅读升级协议</a>-->
+
+                        <!--<input type="checkbox" name="switch" lay-skin="switch">-->
+
+
+                <!--</td>-->
+            <!--</tr>-->
+            </form>
+            <tr>
+
+                <td>版本升级：<a href="{{_G['APP_URL']}}?m=admin&c=setting&a=checkVersion" style="" class="layui-btn layui-btn-radius layui-btn-small">检测新版本</a></td>
+            </tr>
+
+
+
+            </tbody>
+
+        </table>
+
+
+    </div>
+</div>
+
+</body>
+</html>

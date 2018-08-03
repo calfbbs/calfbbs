@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{htmlTitle}}</title>
+    <link href="{{_G['APP']}}/resource/css/install.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.js"></script>
+    <script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.validation.min.js"></script>
+    <script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.icheck.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            });
+        });
+
+        $(function(){
+            jQuery.validator.addMethod("lettersonly", function(value, element) {
+                return this.optional(element) || /^[^:%,'\*\"\s\<\>\&]+$/i.test(value);
+            }, "不得含有特殊字符");
+            $("#install_form").validate({
+                errorElement: "font",
+                rules : {
+                    database_name : {required : true},
+                    server : {required : true},
+                    username : {required : true},
+                    password : {required : true},
+                    port : {required : true,digits : true},
+                    admin : {required : true,lettersonly : true},
+                    admin_password : {required : true, minlength : 6},
+                    admin_rpass : {required : true,equalTo : '#password'},
+                }
+            });
+
+            jQuery.extend(jQuery.validator.messages, {
+                required: "未输入",
+                digits: "格式错误",
+                lettersonly: "不得含有特殊字符",
+                equalTo: "两次密码不一致",
+                minlength: "密码至少6位"
+            });
+
+            $('#next').click(function(){
+                $('#install_form').submit();
+            });
+
+        });
+    </script>
+</head>
+<body>
+{{ include("common/header.html")}}
+<div class="main">
+    <div class="step-box" id="step3">
+        <div class="text-nav">
+            <h1>Step.3</h1>
+            <h2>创建数据库</h2>
+            <h5>填写数据库及站点相关信息</h5>
+        </div>
+        <div class="procedure-nav">
+            <div class="schedule-ico"><span class="a"></span><span class="b"></span><span class="c"></span><span class="d"></span></div>
+            <div class="schedule-point-now"><span class="a"></span><span class="b"></span><span class="c"></span><span class="d"></span></div>
+            <div class="schedule-point-bg"><span class="a"></span><span class="b"></span><span class="c"></span><span class="d"></span></div>
+            <div class="schedule-line-now"><em></em></div>
+            <div class="schedule-line-bg"></div>
+            <div class="schedule-text"><span class="a">检查安装环境</span><span class="b">选择安装方式</span><span class="c">创建数据库</span><span class="d">安装</span></div>
+        </div>
+    </div>
+    <form action="{{G.url('install/index/createDb')}}" id="install_form" method="post">
+        <input type="hidden" value="submit" name="submitform">
+        <input type="hidden" value="{{install_recover}}" name="install_recover">
+
+        <div class="form-box control-group">
+            <fieldset>
+                <legend>数据库信息</legend>
+                <div>
+                    <label>数据库服务器ip地址</label>
+                    <span>
+          <input type="text" name="server" maxlength="20" value="{{dbData['server']}}" placeholder="localhost">
+          </span> <em>数据库服务器地址，本地安装一般为localhost</em></div>
+                <div>
+                    <label>数据库名</label>
+                    <span>
+          <input type="text" name="database_name" maxlength="40" value="{{dbData['database_name']}}" placeholder="calfbbs">
+          </span> <em></em></div>
+                <div>
+                    <label>数据库用户名</label>
+                    <span>
+          <input type="text" name="username" maxlength="20" value="{{dbData['username']}}" placeholder="root">
+          </span> <em></em></div>
+                <div>
+                    <label>数据库密码</label>
+                    <span>
+          <input type="password" name="password" maxlength="20" value="{{dbData['password']}}" placeholder="password">
+          </span> <em></em></div>
+                <div>
+                    <label>表前缀</label>
+                    <span>
+          <input type="text" name="prefix" maxlength="20" value="{{dbData['prefix']}}" >
+          </span> <em>同一数据库运行多个程序时，请修改前缀</em></div>
+                <div>
+                    <label>数据库端口</label>
+                    <span>
+          <input type="text" name="port" maxlength="20" value="{{dbData['port']}}" placeholder="3306">
+          </span> <em>数据库默认端口一般为3306</em></div>
+
+
+                <div>
+                    <label>&nbsp;</label>
+                    <input type="checkbox" name="demo_data"  {% if dbData['demo_data']==1 %} checked  {% endif %}  checkedid="demo_data" value="1">
+                    <h4>安装演示数据</h4></div>
+
+
+                {% if install_error !="" %}
+
+                <div>
+                    <label></label>
+                    <span class="error">{{install_error}}</span></div>
+                {% endif %}
+            </fieldset>
+          <fieldset>
+          <legend>网站信息</legend>
+              <div>
+                 <!-- <label>站点名称</label>
+                  <span>
+        <input name="site_name" value="" maxlength="100" type="text">-->
+
+                  <!--  </span> <em>输入站点名称，安装后可在平台设置中进行修改</em></div>-->
+                       <div>
+                           <label>管理员账号</label>
+                           <span>
+                 <input name="admin" value="{{dbData['admin']}}" maxlength="20" type="text">
+                 </span> <em></em></div>
+                       <div>
+                           <label>管理员密码</label>
+                           <span>
+                 <input name="admin_password" id="password" maxlength="20" value="{{dbData['admin_password']}}" type="password">
+                 </span> <em>管理员密码不少于6个字符</em></div>
+                       <div>
+                           <label>重复密码</label>
+                           <span>
+                 <input name="admin_rpass" value="{{dbData['admin_rpass']}}" maxlength="20" type="password">
+                 </span> <em>确保两次输入的密码一致</em></div>
+                   </fieldset>
+               </div>
+               <div class="btn-box"><a href="{{G.url('install/index/select')}}" class="btn btn-primary">上一步</a><a id="next" href="javascript:void(0);" class="btn btn-primary">下一步</a></div>
+           </form>
+       </div>
+{{ include("common/footer.html")}}
+       </body>
+       </html>

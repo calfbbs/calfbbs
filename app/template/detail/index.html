@@ -1,0 +1,682 @@
+{{ include("common/header.html")}}
+
+{{ include("common/column.html")}}
+<link rel="stylesheet" href="{{_G['APP']}}/resource/wangEditor/css/wangEditor.min.css">
+<script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{_G['APP']}}/resource/wangEditor/js/wangEditor.min.js"></script>
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8 content detail">
+            <div class="fly-panel detail-box">
+                <h1>{{posts['title']}}</h1>
+                <div class="fly-detail-info">
+                    <!-- <span class="layui-badge">审核中</span> -->
+
+                    {% if posts['status'] == 3 %}
+                    <span class="layui-badge" style="background-color: #999;">删除</span>
+                    {% elseif data['status'] == 2 %}
+                    <span class="layui-badge layui-bg-red">精华</span>
+                    {% elseif data['status'] == 1 %}
+                    <!-- <span class="layui-badge" style="background-color: #5FB878;">已结</span> -->
+
+                    <span class="layui-badge layui-bg-black">已解决</span>
+                    {% elseif data['status'] == 0 %}
+                    <span class="layui-badge layui-bg-green fly-detail-column">未解决</span>
+                    {% endif %}
+
+                    <div class="fly-admin-box" data-id="123">
+
+                        <!-- <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span> -->
+
+                        <!--  <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">精华</span> -->
+                        <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
+
+                        <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">已解决</span> -->
+
+                        <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">未解决</span>  -->
+
+                    </div>
+                    <span class="fly-list-nums">
+                    <a href="#comment"><i class="iconfont" title="回帖数量">&#xe60c;</i>{{posts['reply_count']}}</a>
+                    <i class="iconfont" title="访问量">&#xe60b;</i>{{posts['visits_count']}}
+                    </span>
+                </div>
+                <div class="detail-about">
+                    <a class="fly-avatar" href="{{ G.url('app/users/home',{'uid':userInfo['uid']})}}">
+                        <img src="{{_G['ATTACHMENT_ROOT']}}/{{userInfo['avatar']}}" alt="{{ userInfo['username']}}">
+                    </a>
+                    <div class="fly-detail-user">
+                        <a href="{{ G.url('app/users/home',{'uid':userInfo['uid']})}}" class="fly-link">
+                            <cite>{{ userInfo['username'] }}</cite>
+                            <!-- <i class="iconfont icon-renzheng" title="认证信息：{{ rows.user.approve }}"></i>
+                             <i class="layui-badge fly-badge-vip">VIP3</i>-->
+                        </a>
+                        <span>{{posts['change_time'] | date('Y-m-d')}}</span>
+                    </div>
+                    <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
+                        <!--<span style="padding-right: 10px; color: #FF7200">悬赏：60飞吻</span>-->
+
+                        {% if userInfo['uid'] == loginUserinfo['uid'] %}
+                        <a href="{{ G.url('app/post/edit',{id:posts.id})}}">  <span class="layui-btn layui-btn-xs jie-admin" type="edit">
+                        编辑此贴
+
+                        </span></a>  {% endif %}
+                    </div>
+                </div>
+                <div class="detail-body photos">
+
+
+                    {{ posts['text']|e('html_attr') }}
+
+                </div>
+            </div>
+
+            <div class="fly-panel detail-box" id="flyReply">
+                <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+                    <legend>回帖</legend>
+                </fieldset>
+
+                <ul class="jieda" id="jieda">
+                    <!--回复开始-->
+                    {% if replieList.list%}
+                    {% for data in replieList.list %}
+                    <li  class="jieda-daan del{{data.id}}">
+                        <a name="item-1111111111"></a>
+                        <div class="detail-about detail-about-reply">
+                            <a class="fly-avatar" href="{{ G.url('app/users/home',{'uid':data.uid})}}">
+                                <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.avatar}}" alt=" ">
+                            </a>
+                            <div class="fly-detail-user">
+                                <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-link">
+                                    <cite>{{data.username}}</cite>
+                                    <!-- <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
+                                     <i class="layui-badge fly-badge-vip">VIP3</i>-->
+                                </a>
+                                {% if data.uid==userInfo['uid'] %}
+                                <span>(楼主)</span>
+                                {%endif%}
+
+                                {% if data.status==2 %}
+                                <span style="color:#5FB878">(管理员)</span>
+                                {%endif%}
+                                {% if data.status==3 %}
+                                <span style="color:#999">（该号已被封）</span>
+                                {%endif%}
+                                <!--<span style="color:#FF9E3F">（社区之光）</span>-->
+
+
+                            </div>
+
+                            <div class="detail-hits">
+                                <span>{{data.create|date('Y-m-d H:i:s')}}</span>
+                            </div>
+
+                            <!--   <i class="iconfont icon-caina" title="最佳答案"></i>-->
+                        </div>
+                        <div class="detail-body jieda-body photos">
+                            <p>
+                                {% if data.pusername !="" and puid !=-1%}
+                                @<a href="{{G.url('app/users/home',{'uid':data.puid})}}">{{data.pusername}}</a>
+                                {%endif%}</p>
+                            <div id="edit{{data.id}}">{{data.reply_text|e('html_attr')}}</div>
+                        </div>
+                        <div class="jieda-reply">
+              <span class="jieda-zan  data-" type="zan" status="0" id="data-id-{{data.id}}" data-id="{{data.id}}" onclick="thumbClick(this,'{{data.id}}')">
+                <i class="iconfont icon-zan"></i>
+                <em id="em-data-{{data.id}}">{{data.thumb_cnt}}</em>
+              </span>
+                            <span type="reply" onclick="commitClick('{{data.uid}}','{{data.username}}')">
+                <i class="iconfont icon-svgmoban53"></i>
+                回复
+              </span>
+                            {% if data.uid==userinfo.uid or userinfo.statu==2 %}
+                            <div class="jieda-admin">
+                                <!--  <span type="edit" onclick="editClick('{{data.id}}')">编辑</span>-->
+                                <span type="del" onclick="deleteClick('{{data.id}}')">删除</span>
+                                <!--  <span class="jieda-accept" type="accept">采纳</span>-->
+                            </div>
+                            {% endif %}
+                        </div>
+                    </li>
+
+                    {% endfor %}
+                    {%else%}
+                    <!-- 无数据时 -->
+                    <li class="fly-none">消灭零评论</li>
+                    {%endif%}
+                    <!--回复结束-->
+
+
+
+                </ul>
+                <div style="text-align: center">
+                    <!-- <div class="laypage-main"> -->
+                    <div id="pages"></div>
+                    <!-- </div> -->
+                </div>
+
+                <div class="layui-form layui-form-pane">
+                    <a id="#Location" name="Location">
+                        <form  method="post">
+                            <input type="hidden" name="reid" value="{{post_id}}"/>
+                            <input type="hidden" name="uid" value="{{loginUserinfo['uid']}}"/>
+                            <input type="hidden" name="puid" value=""/>
+                            <input type="hidden" name="text" value="评论"/>
+                            <div class="layui-form-item layui-form-text">
+                                <a name="comment"></a>
+                                <div class="layui-input-block " id="base">
+                                <textarea id="textarea"  name="reply_text" onclick="getContent()" required lay-verify="required" placeholder="请输入评论内容"  class="layui-textarea fly-editor " style="height:300px;">
+
+                                </textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <button class="layui-btn"id="replies" lay-filter="replies" lay-submit>提交评论</button>
+                                <div class="layui-btn   layui-btn-primary" id="noreplies"  onclick="noCommitClick()" lay-filter="noreplies" >取消评论</div>
+                            </div>
+                        </form>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <dl class="fly-panel fly-list-one">
+                <dt class="fly-panel-title">一周热议</dt>
+                {% for data in hotPostList %}
+                <dd>
+                    <a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>
+                    <span><i class="iconfont icon-pinglun1"></i> {{data.reply_count}}</span>
+                </dd>
+                {% endfor %}
+
+
+                <!-- 无数据时 -->
+                <!--
+                <div class="fly-none">没有相关数据</div>
+                -->
+            </dl>
+
+            <div class="fly-panel">
+                <div class="fly-panel-title">
+                    详情页广告
+                </div>
+                {% for data in advertisementlList %}
+                {% if data.type==1 %}
+                <div class="fly-panel-main">
+                    <a href="{{data.url_path}}" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">{{data.name}}</a>
+                </div>
+
+
+
+
+                {% else %}
+                <div class="fly-panel-main">
+                    <a href="{{data.url_path}}" target="_blank" time-limit="2017.09.25-2099.01.01" >
+                        <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.image}}" style="width:350px;height:60px;" alt=""/>
+                    </a>
+                </div>
+                {% endif %}
+                {% endfor %}
+
+            </div>
+
+            <!--<div class="fly-panel" style="padding: 20px 0; text-align: center;">-->
+            <!--<img src="app/resource/images/weixin.jpg" style="max-width: 100%;" alt="layui">-->
+            <!--<p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>-->
+            <!--</div>-->
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    layui.use('form', function () {
+        var form = layui.form;
+
+
+    });
+    /**编辑框**/
+    $(function () {
+        $('#tpt_input').keydown(function (e) {
+            if (e.which === 13) {
+                $("#tpt_btn").click();
+                e.preventDefault();
+                return false;
+            }
+        });
+        $("#tpt_sel").on('click', 'a>em', function () {
+            var name = "keywords";
+            var tag = $(this).parent().text();
+            $(this).parent().remove();
+            var tags = new Array();
+            $("#tpt_sel").find('a').each(function () {
+                tags.push($(this).text());
+            });
+            $("input[name=" + name + "]").val(tags.join(","));
+            $("#tpt_pre a:contains('" + tag + "')").removeClass("selected");
+        });
+        $("#tpt_btn").click(function () {
+            var name = "keywords";
+            var tags = $.trim($("input[name=" + name + "]").val());
+            if (tags !== "") {
+                tags = tags.split(",");
+            } else {
+                tags = new Array();
+            }
+            var tag = $.trim($("#tpt_input").val());
+            if (tag !== '' && $.inArray(tag, tags) === -1) {
+                tags.push(tag);
+                $("#tpt_pre a:contains('" + tag + "')").addClass("selected");
+            }
+            $("#tpt_sel").children('span').empty();
+            $.each(tags, function (k, v) {
+                $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<em></em></a>');
+            });
+            $("input[name=" + name + "]").val(tags.join(","));
+            $("#tpt_input").val('');
+        });
+        $("#tpt_pre").on('click', 'a:not(.selected)', function () {
+            var name = "keywords";
+            var tags = $.trim($("input[name=" + name + "]").val());
+            if (tags !== "") {
+                tags = tags.split(",");
+            } else {
+                tags = new Array();
+            }
+            var tag = $.trim($(this).text());
+            if (tag !== '' && $.inArray(tag, tags) === -1) {
+                tags.push(tag);
+            }
+            $("#tpt_sel").children('span').empty();
+            $.each(tags, function (k, v) {
+                $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<em></em></a>');
+            });
+            $("input[name=" + name + "]").val(tags.join(","));
+            $(this).addClass('selected');
+        });
+    });
+</script>
+<script type="text/javascript">
+    var editor = new wangEditor('textarea');
+    editor.config.uploadImgUrl = "{{ G.url('app/index/doUploadPic') }}";
+    if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
+        editor.config.menus = [
+            'source',
+            'bold',
+            'underline',
+            'fontsize',
+            'link',
+            'emotion',
+            //  '|',
+            'img',
+            'undo',
+        ];
+
+    }else{
+        editor.config.menus = [
+            'source',
+            //   '|',
+            'bold',
+            'underline',
+            //  'italic',
+            // 'strikethrough',
+            // 'eraser',
+            'forecolor',
+            'bgcolor',
+            // '|',
+            'quote',
+            'fontfamily',
+            'fontsize',
+            'head',
+            //   'unorderlist',
+            //   'orderlist',
+            //  'alignleft',
+            //  'aligncenter',
+            //   'alignright',
+            //   '|',
+            'link',
+            // 'unlink',
+            'table',
+            'emotion',
+            //  '|',
+            'img',
+            'video',
+            // 'location',
+            'insertcode',
+            //    '|',
+            'undo',
+            'redo',
+            'fullscreen'
+        ];
+
+    }
+
+    editor.create();
+    function getContent() {
+        var text = ed.txt.html();
+
+    }
+
+
+
+</script>
+
+<script type="text/javascript">
+
+</script>
+
+<script>
+    var ed;
+
+    /**
+     * 构造分页功能
+     */
+
+
+    layui.use(['layer', 'form','laypage'], function(){
+        var laypage = layui.laypage;
+        var form =layui.form;
+        //完整功能
+        laypage.render({
+            elem: 'pages',
+            count: "{{replieList.pagination.total}}", //数据总数，从服务端得到
+            last:'尾页',
+            limit:"{{replieList.pagination.page_size}}",
+            curr:"{{replieList.pagination.current_page}}",
+            // layout: ['prev', 'page', 'next'],
+            jump: function(obj,first){
+                var url="{{ G.url('app/detail/index',{'id':G.GPC['id'],'current_page':'currs','page_size':'limit'})}}";
+                /**
+                 * 替换处理
+                 * @type {string}
+                 */
+                url = url.replace("currs", obj.curr);
+                url = url.replace("limit", obj.limit);
+                console.log(url);
+                //首次不执行
+                if(!first){
+                    window.location.href=escapeUrl(url);//转义amp字符
+                }
+            }
+        });
+
+
+        pl = '';
+        var checkSubmitFlg = false;//提交评论开关,防止重复评论
+        //监听评论回复提交
+        form.on('submit(replies)', function(data){
+
+
+            var text=$('input[name=text]').val();
+            var field=data.field;
+            if(field.uid==""){
+                layer.msg("您当前未登陆，请登陆后再进行"+text);
+                return false;
+            }
+
+            if(field.puid==""){
+                field.puid=-1;
+            }
+
+            if(pl != "") {
+
+                var str = field.reply_text;
+                var pattern = pl;
+                str = str.replace(new RegExp(pattern), "");
+                field.reply_text = str;
+            }
+
+            if(checkSubmitFlg==true){
+                return false;
+            }
+
+
+            checkSubmitFlg=true;
+
+            $.ajax({
+                url:"{{G.url('app/detail/commit')}}",//当前ajax请求的地址
+                type:'post',//请求的方式
+                async:true,//是否异步  默认为异步
+                data:field,//当前ajax请求的参数  
+                dataType:"json",
+                success: function(data){//发送成功时的代码执行
+
+
+                    if(data.code==1001 &&  data.data){
+                        layer.msg(text+"成功"+"  正在刷新页面....");
+                        setTimeout(function(){
+                            window.location.href="{{G.url('app/detail/index',{'id':G.GPC['id']})}}";
+                        }, 2000);
+
+                    }else{
+                        layer.msg(text+"失败");
+                    }
+                    subm=false;
+                },
+                error:function(){//失败时的代码执行
+                    layer.msg(text+"失败，请重新尝试"+text);
+                    subm=false;
+                }
+
+            })
+            return false;
+        });
+
+    });
+
+
+
+    /**
+     * 回复赋值puid
+     */
+    function commitClick(uid,username){
+        pl = '回复@'+username+"的评论：";
+
+//        editor.txt.html('回复@'+username+"的评论")<input value="不可修改" disabled="disabled"  type="text"/>
+        $('.wangEditor-txt').html('回复@'+username+"的评论：");
+//        $('.wangEditor-txt').html('<input value=回复@+username+"的评论" disabled="disabled"  type="text"/>');
+        $('input[name=puid]').val(uid);
+        $('input[name=text]').val('回复');
+        $('#replies').text('提交回复');
+        $('#noreplies').text('取消回复');
+        window.location.hash = "#Location";
+        window.location = window.location;
+    }
+
+
+    /**
+     * 取消回复赋值
+     */
+    function noCommitClick(){
+        var text=$('input[name=text]').val();
+        if(text=="回复"){
+            $('input[name=puid]').val('');
+            $('input[name=text]').val('评论');
+            $('#replies').text('提交评论');
+            $('#noreplies').text('取消评论');
+        }
+
+//        $('#textarea').val('');
+//        $('#textarea').attr('placeholder','请输入评论');
+        $('.wangEditor-txt').html("");
+    }
+
+    /**
+     * 点赞
+     */
+    function thumbClick(ts,id){
+        var uid="{{userinfo.uid}}";
+        var url="";
+        if(!uid){
+            layer.msg("您当前未登陆，请登陆后再进行点赞操作");
+            return false;
+        }
+        var status=$(ts).attr('status');
+
+        /**
+         * 判断是点赞还是取消点赞
+         */
+
+        if(status=="0"){
+            var text="点赞";
+            url="{{G.url('app/detail/insThumbRepies')}}";
+            var status="1";
+        }else{
+            var text="取消点赞";
+            url="{{G.url('app/detail/cancelthumbReplies')}}";
+            var status="0";
+
+        }
+        $.ajax({
+            url:url,//当前ajax请求的地址
+            type:'get',//请求的方式
+            async:true,//是否异步  默认为异步
+            data:{rid:id,reid:"{{post_id}}",uid:"{{userinfo.uid}}"},//当前ajax请求的参数  
+            dataType:"json",
+            success: function(data){//发送成功时的代码执行
+
+
+                if(data.code==1001 &&  data.data){
+                    var count=$("#em-data-"+id).text();
+                    if(status=="1"){
+                        $("#em-data-"+id).text(count*1+1);
+                        $("#data-id-"+id).attr('class',"jieda-zan zanok data-");
+                    }else{
+                        $("#em-data-"+id).text((count-1)*1);
+                        $("#data-id-"+id).attr('class',"jieda-zan  data-");
+
+                    }
+
+                    $("#data-id-"+id).attr('status',status);
+                    layer.msg(text+"成功");
+                }else{
+                    layer.msg(text+"失败");
+                }
+            },
+            error:function(){//失败时的代码执行
+                layer.msg(text+"失败，请重新尝试");
+
+            }
+
+        })
+    }
+
+    /**
+     * 改变点赞状态，使用异步执行，提升网页效率
+     */
+    $('.data-').each(function(){
+        var url="{{G.url('app/detail/getPraiseRecord')}}";
+        var id=$(this).attr('data-id');
+
+        $.ajax({
+            url:url,//当前ajax请求的地址
+            type:'get',//请求的方式
+            async:false,//是否异步  默认为异步
+            data:{rid:id,reid:"{{post_id}}",uid:"{{userinfo.uid}}"},//当前ajax请求的参数  
+            dataType:"json",
+            success: function(data){//发送成功时的代码执行
+                if(data.code==1001 &&  data.data.status=="1"){
+                    $("#data-id-"+id).attr('class',"jieda-zan zanok data-");
+                    $("#data-id-"+id).attr('status',1);
+                }
+            },
+            error:function(){//失败时的代码执行
+
+
+            }
+
+        })
+    })
+
+    /**
+     * 更新访问量
+     */
+    var url="{{G.url('app/detail/changeVisitRelies')}}";
+    $.ajax({
+        url:url,//当前ajax请求的地址
+        type:'get',//请求的方式
+        async:false,//是否异步  默认为异步
+        data:{id:"{{post_id}}",type:1},//当前ajax请求的参数  
+        dataType:"json",
+        success: function(data){//发送成功时的代码执行
+
+        },
+        error:function(){//失败时的代码执行
+
+
+        }
+
+    })
+
+    /**
+     * 删除回复
+     */
+    function deleteClick(id){
+        var url="{{G.url('app/detail/delReplies')}}";
+        $.ajax({
+            url:url,//当前ajax请求的地址
+            type:'get',//请求的方式
+            async:false,//是否异步  默认为异步
+            data:{id:id,reid:"{{post_id}}"},//当前ajax请求的参数  
+            dataType:"json",
+            success: function(data){//发送成功时的代码执行
+                if(data.code==1001){
+                    $(".del"+id).remove();
+
+                    layer.msg("删除成功");
+                }else{
+                    layer.msg("删除失败");
+                }
+            },
+            error:function(){//失败时的代码执行
+
+                layer.msg("删除失败");
+            }
+
+        })
+    }
+
+
+
+    /**
+     * 编辑回复
+     */
+    function editClick(id){
+
+        $('#textarea').attr('placeholder','回复@'+username+"的评论");
+        $('input[name=puid]').val(uid);
+        $('input[name=text]').val('回复');
+        $('#replies').text('提交回复');
+        $('#noreplies').text('取消回复');
+        window.location.hash = "#Location";
+        window.location = window.location;
+
+        /*
+        var url="{{G.url('app/detail/changeReplies')}}";
+        var reply_text=$('#edit'+id).html();
+        console.log(reply_text);
+
+        $.ajax({
+            url:url,//当前ajax请求的地址
+            type:'get',//请求的方式
+            async:false,//是否异步  默认为异步
+            data:{id:id,reid:"{{post_id}}",reply_text:reply_text},//当前ajax请求的参数  
+            dataType:"json",
+            success: function(data){//发送成功时的代码执行
+                if(data.code==1001 && data.data){
+                    $(".del"+id).remove();
+
+                    layer.msg("删除成功");
+                }else{
+                    layer.msg("删除失败");
+                }
+            },
+            error:function(){//失败时的代码执行
+
+                layer.msg("删除失败");
+            }
+
+        })*/
+    }
+</script>
+
+{{ include("common/footer.html")}}

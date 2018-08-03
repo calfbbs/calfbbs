@@ -1,0 +1,146 @@
+
+{{ include("common/header.html")}}
+<div class="admin">
+    {{ include("common/settingNav.html")}}
+    <link rel="stylesheet" href="{{_G['APP']}}/resource/wangEditor/css/wangEditor.min.css">
+    <script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{_G['APP']}}/resource/wangEditor/js/wangEditor.min.js"></script>
+    <div class="aright"  style="margin-top: 0px;">
+        <style type="text/css">
+            .tpt_sels a{padding-right:15px;position:relative}
+            .tpt_sels a{padding:0 20px 0 8px;color:#3B6268;background:#FFFFBA;border:1px #F8E06E solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_pres a.selected{padding:0 8px;color:#3B6268;background:#FFFFBA;border:1px #F8E06E solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_pres a{padding:0 8px;color:#fff;background:#5AC7A9;border:1px #5AC7A9 solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_sels a em{width: 12px;height: 12px;font-style: normal;display: block;position: absolute;top: 7px;right: 4px;z-index: 2;background: url(/blog/Public/img/sx.png) no-repeat 0 0;}
+            .wangEditor-menu-container .menu-item a {padding: 12px 0;}
+            .wangEditor-menu-container .menu-item {height: 37px;width: 37px;}
+            .wangEditor-menu-container .menu-group {padding: 0;}
+            .wangEditor-container {border: 1px solid #e6e6e6;}
+        </style>
+        <fieldset class="layui-elem-field layui-field-title" style="margin: 20px 30px 20px 20px;">
+            <legend>在线更新</legend>
+        </fieldset>
+
+        <table class="layui-table" style="width:90%;margin:0 auto;" lay-skin="line">
+            <thead>
+            <tr>
+                <th>更新文件:
+
+                    {% if check['code']==0 %}
+
+
+                         {% for data in check['data']['list'] %}
+                    <br /><span style="color:#009688"> {{data}}</span>
+
+                        {% endfor %}
+
+                    {% else %}
+                        没有更新文件
+                     {% endif %}
+
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td>当前版本：{{version['tag']}}&nbsp;&nbsp;服务器版本:
+                    {% if serverVersion['code']==0 %}
+                            {{serverVersion['data']}}
+                    {% else %}
+                        当前服务器没有设置版本（打tag）
+                    {% endif %}
+                </td>
+            </tr>
+
+
+            <form class="layui-form" action="">
+                <tr>
+
+
+                <td>升级协议：<input type="checkbox" name="open" lay-filter="switchTest" lay-skin="switch"><a>我同意升级并已经完成数据库等备份,同意承担升级所产生的风险
+
+
+                </a>
+
+
+
+
+                </td>
+                </tr>
+
+            <tr>
+
+
+                {% if check['code']==0 %}
+
+
+                <td>确认升级：<button class="layui-btn layui-btn-radius layui-btn-small" lay-submit lay-filter="upgrade">开始升级</button></td>
+
+                {% else %}
+                <td>确认升级：当前已经是最新版本</td>
+                {% endif %}
+
+
+
+            </tr>
+
+
+
+            </tbody>
+
+        </table>
+        </form>
+        <!--<fieldset class="layui-elem-field layui-field-title" style="margin: 20px 30px 20px 20px;">-->
+            <!--<legend>更新文件</legend>-->
+        <!--</fieldset>-->
+    </div>
+</div>
+<script>
+    //Demo
+    layui.use(['form','layer'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+        //监听指定开关
+
+
+        //监听提交
+        form.on('submit(upgrade)', function(data){
+            //询问框
+            var  open= $("input[name=open]").attr("checked");
+            if(!open){
+                layer.msg("你当前还未勾选升级协议");
+                return false;
+            }
+
+            layer.confirm('你确定已经备份好文件,并同意承担升级风险？', {
+                btn: ['确定','放弃'] //按钮
+            }, function(){
+                $.ajax({
+                    url:"{{G.url('admin/setting/doUpgrade')}}",//当前ajax请求的地址
+                    type:'post',//请求的方式
+                    async:true,//是否异步  默认为异步
+                    dataType:"json",
+                    success: function(data){//发送成功时的代码执行
+                        if(data.code==1001){
+                            layer.msg("升级成功");
+                        }
+                    },
+                    error:function(){//失败时的代码执行
+                        layer.msg("升级失败，请检查根目录下所有文件是否都有写入权限");
+
+                    }
+
+                })
+                layer.msg('升级任务已启动,5秒后请刷新界面查看', {icon: 1});
+            }, function(){
+
+            });
+                    return false;
+        });
+    });
+</script>
+
+{{ include("common/footer.html")}}

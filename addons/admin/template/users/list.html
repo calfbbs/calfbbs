@@ -1,0 +1,235 @@
+{{ include("common/header.html")}}
+<div class="admin">
+    {{ include("common/nav.html")}}
+    <script src="{{_G['APP']}}/resource/js/jquery-1.4.2.min.js"></script>
+    <div class="aright">
+        <div class="arz" style="float: left;margin: 0px 20px 20px 30px;"><a href="{{ G.url('admin/users/add')}}"><i class="layui-icon">&#xe608;</i>添加用户</a></div>
+
+        <div style="float: left;">
+            <form class="layui-form" action="{{ G.url('admin/users/userList')}}" method="get">
+                <input type="hidden" name="m" value="admin"/>
+                <input type="hidden" name="c" value="users"/>
+                <input type="hidden" name="a" value="userList"/>
+                <input placeholder="输入关键字" name="kw" value="{{kw}}" type="text" class="layui-input" style="float: left;margin-right: 10px;width: 300px;">
+                <button class="layui-btn" style="float: left;" value="查询" type="submit">查询</button>
+            </form>
+        </div>
+
+
+        <form method="post" class="aform cl" id="form" action="{{ G.url('admin/users/delete')}}">
+            <input type="hidden" name="current_page" value="{{pagination.current_page}}"/>
+            <table width="100%">
+                <tr>
+                    <th width="3%" align="center"><input type="checkbox" name="checkbox" id="selall" /></th>
+                    <th width="5%" align="center">序号</th>
+                    <th width="9%" align="center">用户头像</th>
+                    <th width="5%" align="center">用户昵称</th>
+                    <th width="5%" align="center">email</th>
+                   <!-- <th width="10%" align="center">缩略图</th>-->
+                    <!-- <th width="10%" align="center">是否推荐</th>-->
+                     <th width="9%" align="center">用户性别</th>
+
+                     <th width="9%" align="center">状态</th>
+                     <th width="9%" align="center">创建时间</th>
+                     <th width="15%" align="center">操作</th>
+                 </tr>
+                 {% for data in list %}
+                 <tr>  
+                     <td align="center" style="display: none;"><input type="checkbox" class="selall_avatar" name="deletes_avatar[]" value="{{data.avatar}}" id="selall_avatar{{loop.index}}"/></td>                 
+                     <td align="center"><input type="checkbox" class="selall" name="deletes[]" value="{{data.uid}}" id="selall{{loop.index}}" data-index="{{loop.index}}"/></td>
+                     <td align="center">{{loop.index}}</td>
+                 <!--    <td align="center"><a target="_blank" href="/blog/index.php?m=Home&c=index&a=article&id=3">网友投稿</a></td>-->
+                    <td align="center">
+                        <img src="{{_G['ATTACHMENT_ROOT']}}/{{ data.avatar }}" height="30">		</td>
+                    <!-- <td align="center">网友投稿</td> -->
+                    <td align="center">{{data.username}}</td>
+                    <td align="center">{{data.email}}</td>
+                    <td align="center"><span style="color:#FF5722;">{% if data.sex==1 %}男{% else %}女{% endif %}</span></td>
+                    <td align="center"><span style="color:#FF5722;">{% if data.status==1 %}
+                        普通用户
+                        {% elseif data.status==2 %}
+                        管理员
+                        {% elseif data.status==3 %}
+                        黑名单用户
+                        {% else %}
+                        空
+                        {% endif %}</span></td>
+                    <td align="center">{{data.create_time|date("Y-m-d")}}</td>                      
+                    <td align="center">
+                        <a href="{{ G.url('admin/users/edit',{current_page:pagination.current_page,uid:data.uid})}}"><i class="layui-icon" style="font-size: 20px; color: #009688;">&#xe642;</i>修改资料</a>
+                        <a href="javascript:void(0)" onclick="del('{{ data.uid }}','{{ data.avatar }}','{{pagination.current_page}}');">
+                            <i class="layui-icon" style="font-size: 20px; color: #009688;">&#xe640;</i>
+                            删除
+                        </a>
+                    </td>               
+                </tr>
+                {% endfor %}
+                <!--<tr>-->
+                <!--<td align="center"><input type="checkbox" class="selall" name="deletes[]" value="2" /></td>-->
+                <!--<td align="center">2</td>-->
+                <!--<td align="center"><a target="_blank" href="/blog/index.php?m=Home&c=index&a=article&id=2">科大讯飞发布会，我看到的人工智能</a></td>-->
+                <!--<td align="center">-->
+                    <!--<img src="/blog/Uploads/2016-12-04/5843874ce75cf.jpg" height="30">-->
+                <!--</td>-->
+                <!--<td align="center"><span style="color:#FF5722;">已推荐</span></td>-->
+                <!--<td align="center"><span style="color:#FF5722;">已精选</span></td>-->
+                <!--<td align="center">人工智能</td>-->
+                <!--<td align="center">显示</td>-->
+                <!--<td align="center">2016-12-03</td>-->
+                <!--<td align="center"><a href="{{_G['APP_URL']}}?m=admin&c=posts&a=edit">修改</a> | <a href="/blog/admin.php?m=Admin&c=article&a=delete&id=2" onclick="return confirm('您确定要删除吗？');">删除</a>-->
+                <!--</td>-->
+            <!--</tr>-->
+                <!--<tr>-->
+                <!--<td align="center"><input type="checkbox" class="selall" name="deletes[]" value="1" /></td>-->
+                <!--<td align="center">1</td>-->
+                <!--<td align="center"><a target="_blank" href="{{_G['APP_URL']}}?m=admin&c=posts&a=edit">虚拟现实游戏玩太久会怎样？玩家亲述恍如隔世的 “现实丧失感”</a></td>-->
+                <!--<td align="center">-->
+                    <!--<img src="/blog/Uploads/2016-12-04/5843883f8505d.jpg" height="30">-->
+                <!--</td>-->
+                <!--<td align="center"><span style="color:#FF5722;">已推荐</span></td>-->
+                <!--<td align="center"><span style="color:#FF5722;">已精选</span></td>-->
+                <!--<td align="center">虚拟现实</td>-->
+                <!--<td align="center">显示</td>-->
+                <!--<td align="center">2016-12-03</td>-->
+                <!--<td align="center"><a href="{{_G['APP_URL']}}?m=admin&c=posts&a=edit">修改</a> | <a href="/blog/admin.php?m=Admin&c=article&a=delete&id=1" onclick="return confirm('您确定要删除吗？');">删除</a>-->
+                <!--</td>-->
+            <!--</tr>-->
+            </table>
+            <div class="layui-form-item">
+                <div style="margin-top: 20px;">
+                    <!-- <button class="layui-btn" onclick="return confirm('您确定要删除吗？');" type="submit">删除选中</button> -->
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">删除选中</button>
+                    <!-- <button class="layui-btn layui-btn-primary" onclick="history.go(-1)">返回</button> -->
+                </div>
+            </div>
+        </form>
+        <div class="pages">
+
+           <div id="pages"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#selall").click(function(){
+        if($(this).attr("checked")){
+            $(".selall").attr("checked","checked");
+            $(".selall_avatar").attr("checked","checked");
+        }else{
+            $(".selall").removeAttr("checked");
+            $(".selall_avatar").removeAttr("checked","checked");
+        }
+
+    })
+    
+    $(".selall").click(function(){
+        var index = $(this)[0].dataset.index
+        console.log(index)
+        if($(this).attr("checked")){
+            $("#selall_avatar"+index).attr("checked","checked");
+        }else{
+            $("#selall_avatar"+index).removeAttr("checked","checked");
+        }
+        
+    })
+     
+</script>
+<!-- <script>
+
+layui.use(['util','jquery'], function(){
+    var util = layui.util;
+  
+    $(function(){
+      $(".time_str").each(function(){
+        var timestamp=$(this).text()
+        //console.log($(this).text())
+        var date = new Date();
+        date.setTime(timestamp * 1000);
+        var str=util.toDateString(date, 'yyyy-MM-dd')
+        console.log(str)
+        $(this).html(str)
+      });
+    })
+});
+</script> -->
+<script>
+    /**
+     * 构造分页功能
+     */
+     var kw='{{kw}}'
+    layui.use('laypage', function(){
+        var laypage = layui.laypage;
+
+        //完整功能
+        laypage.render({
+            elem: 'pages'
+            ,count: "{{pagination.total}}", //数据总数，从服务端得到
+            limit:"{{pagination.page_size}}",
+            curr:"{{pagination.current_page}}",
+            layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
+            ,jump: function(obj,first){
+                var url="{{ G.url('admin/users/userList',{'current_page':'currs','page_size':'limit','kw':'kww'})}}";
+                /**
+                 * 替换处理
+                  * @type {string}
+                 */
+                url = url.replace("currs", obj.curr);
+                url = url.replace("limit", obj.limit);
+                url = url.replace("kww", kw);
+                console.log(url)
+                //首次不执行
+                if(!first){
+                    window.location.href=escapeUrl(url);//转义amp字符
+                }
+            }
+        });
+    });
+    layui.use('form', function () {
+        var form = layui.form;
+        var status = false;
+
+        //监听提交
+        form.on('submit(formDemo)', function () {
+            console.log(123);            
+            if(status==false){
+                layer.msg('您确定要删除吗？', {
+                    time: 0,//不自动关闭
+                    btn: ['确定', '取消'],
+                    yes: function () {
+                      status = true;
+                        /**
+                         * 再触发一次表单
+                         */
+                      $("#form").trigger('submit');
+
+                    }
+                });
+            }else{
+                return true;
+            }
+            return false;
+        });
+
+    });
+
+    function del(id,avatar,current_page) {
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            //信息框-例2
+            layer.msg('您确定要删除吗？', {
+                time: 0,//不自动关闭
+                btn: ['确定', '取消'],
+                yes: function (index) {
+                    var url = "{{ G.url('admin/users/delete',{'uid':'uidd','avatar':'avatarr','current_page':'current_pagee'})}}";
+                    url = url.replace("uidd", id);
+                    url = url.replace("avatarr", avatar);
+                    url = url.replace("current_pagee", current_page);
+                    console.log(url)
+                    window.location.href = escapeUrl(url);//转义amp字符
+                }
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

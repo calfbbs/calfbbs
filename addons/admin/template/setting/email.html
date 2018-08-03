@@ -1,0 +1,112 @@
+<div class="layui-tab-item  {% if _GPC['t']=='email' %} layui-show {%endif%}">
+
+    <form class="layui-form bform" method="post" action="{{G.url('admin/setting/saveEmail')}}" enctype="multipart/form-data">
+        <div class="layui-form-item" style="width: 300px;">
+            <label class="layui-form-label">邮件服务器分类</label>
+            <div class="layui-input-block">
+                <select name="email_class">
+                    <option value="0">请选择</option>
+                    <option value=1 {% if email.email_class==1 %}selected{% endif %}>163邮箱</option>
+                    <option value=2 {% if email.email_class==2 %}selected{% endif %}>qq邮箱</option>
+
+                    <!--{% for vo in list %}-->
+                    <!--<option value={{vo.id}} {% if vo.id==info.pid %}selected{% endif %}>{{vo.name}}</option>-->
+                    <!--{% endfor %}-->
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱服务器</label>
+            <div class="layui-input-block">
+                <input type="text" name="email_server" value="{{email.email_server}}" placeholder="请设置邮箱服务器（smtp.163.com）" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">发送邮箱</label>
+            <div class="layui-input-block">
+                <input type="text" name="email_url" value="{{email.email_url}}" placeholder="请设置发送邮箱（xxx@163.com）" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">授权密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="email_pass" value="{{email.email_pass}}" placeholder="请设置授权密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">邮件发送端口</label>
+            <div class="layui-input-block">
+                <input type="text" name="email_port" value="{{email.email_port}}" placeholder="请填写邮件发送端口" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div id="submitEmail" class="layui-btn" >立即提交</div>
+                <button class="layui-btn layui-hide" id="submit"  lay-submit="" lay-filter="formDemo">立即提交</button>
+                <!-- <button class="layui-btn layui-btn-primary" onclick="history.go(-1)">返回</button>-->
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听启用模版
+        form.on("switch(TPL_STATUS)", function(data){
+
+            if(data.elem.checked==true){
+                $('#TPL_DEFAULT').attr("class","layui-form-item layui-show");
+            }else{
+                $('#TPL_DEFAULT').attr("class","layui-form-item layui-hide");
+            }
+
+        });
+
+
+        //监听启用模版
+        form.on("switch(SUFFIX_STATUS)", function(data){
+
+            if(data.elem.checked==true){
+                $('#SUFFIX_STATUS').attr("class","layui-form-item layui-show");
+            }else{
+                $('#SUFFIX_STATUS').attr("class","layui-form-item layui-hide");
+            }
+
+        });
+
+        $("#submitEmail").click(function(){
+            layer.confirm('您确定要修改吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $('#submit').click();
+            }, function(){
+
+            });
+
+        })
+
+        //监听启用模版
+        /*form.on("submit(route)", function(data){
+         //询问框
+
+         layer.confirm('修改系统参数，有可能会导致系统不可用,您确定要修改吗？', {
+         btn: ['确定','取消'] //按钮
+         }, function(){
+         return true;
+         }, function(){
+         return false;
+         });
+         return false;
+
+
+         });*/
+
+
+    });
+
+</script>
