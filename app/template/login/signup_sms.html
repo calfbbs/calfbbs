@@ -1,0 +1,226 @@
+{{ include("common/header.html")}}
+
+<div class="layui-container fly-marginTop">
+  <div class="fly-panel fly-panel-user" pad20>
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+      <ul class="layui-tab-title">
+        <li><a href="{{G.url('app/login/index')}}">登入</a></li>
+        <li class="layui-this">注册</li>
+      </ul>
+      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+        <div class="layui-tab-item layui-show">
+          <div class="layui-form layui-form-pane">
+            <form method="post">
+	            <div class="layui-form-item">
+	                <label for="L_phone" class="layui-form-label">手机</label>
+	                <div class="layui-input-inline">
+	                  <input type="text" id="L_phone" name="mobile" required lay-verify="phone" autocomplete="off" class="layui-input">
+	                </div>	                
+	            </div>
+              
+                <div class="layui-form-item">
+					<label for="L_vercode" class="layui-form-label">验证码</label>
+					<div class="layui-input-inline">
+						<input type="text" id="L_vercode" name="vercode" required="" lay-verify="required" placeholder="请输入手机验证码" autocomplete="off" class="layui-input">
+
+					</div>
+					<div class="layui-form-mid" style="padding:0px 0!important;">
+						<button type="button" class="layui-btn layui-btn-normal" id="FLY-getvercode" >获取验证码</button>                    
+					</div>
+              	</div>
+				<div class="layui-form-item"> 
+					<label for="L_username" class="layui-form-label">昵称</label> 
+					<div class="layui-input-inline"> 
+						<input type="text" id="L_username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input">
+					</div> 
+					<div class="layui-form-mid layui-word-aux" style="padding:9px 0!important">你在社区的名字</div> 
+				</div>
+              
+				<div class="layui-form-item">
+					<label for="L_pass" class="layui-form-label">密码</label>
+					<div class="layui-input-inline">
+					  	<input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-form-mid layui-word-aux" style="padding:9px 0!important">6到16个字符</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label for="L_repass" class="layui-form-label">确认密码</label>
+					<div class="layui-input-inline">
+					  <input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				
+
+				<div class="layui-form-item" style="position: relative; left: -10px; height: 32px;"> 
+					<input type="checkbox" name="agreement" lay-skin="primary" title="" checked="" style="display: none">
+					<div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
+						<i class="layui-icon"></i>
+					</div> 
+					<a href="/instructions/terms.html" target="_blank" style="position: relative; top: 4px; left: 5px; color: #999;">同意用户服务条款</a> 
+				</div>				
+              
+              
+				<div class="layui-form-item">
+					<button class="layui-btn"  lay-submit lay-filter="formDemo">立即注册</button>
+				</div>
+				{% if modules[0].dir_name == 'login' %}
+				<div class="layui-form-item fly-form-app">
+					<span>或者直接使用社交账号快捷注册</span>
+					{% if config['qq']['QQ_STATUS'] == 'on' %}
+					<a href="{{G.url('app/registers/login',{'type':'qq'})}}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
+					{% endif %}
+                    {% if config['weixin']['WEIXIN_STATUS'] == 'on' %}
+					<a href="{{G.url('app/registers/login',{'type':'weixin'})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" class="mine-icon" title="微信登入"><i class="mine-icon" style="font-size: 20px;color:green;">&#xe628;</i></a>
+					{% endif %}
+				</div>
+				
+                {% endif %}
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+	
+
+	layui.use(['util', 'laydate', 'layer','jquery'], function(){
+				
+	  var util = layui.util
+	  ,laydate = layui.laydate
+	  ,layer = layui.layer;
+	  
+	    var thisTimer, setCountdown = function(y, M, d, H, m, s){
+		    var endTime = new Date(y, M||0, d||1, H||0, m||0, s||0) //结束日期
+		    ,serverTime = new Date(); //假设为当前服务器时间，这里采用的是本地时间，实际使用一般是取服务端的
+		     
+		    clearTimeout(thisTimer);
+		    util.countdown(endTime, serverTime, function(date, serverTime, timer){
+		      var str = date[3] + '秒后可重新获取';
+		      lay('#FLY-getvercode').html(str);
+		      lay('#FLY-getvercode').attr("class", 'layui-btn layui-btn-disabled');
+		      thisTimer = timer;
+		      if((date[0]|date[1]|date[2]|date[3])==0){
+		      	lay('#FLY-getvercode').html('获取验证码');
+		    	lay('#FLY-getvercode').attr("class", 'layui-btn layui-btn-normal');
+		      }
+		    });
+		  };
+		$("#FLY-getvercode").click(function(){
+			var mobile=$("#L_phone").val()
+			$.ajax({
+			  url:"{{G.url('app/login/getvercode')}}",//当前ajax请求的地址
+			  type:'post',//请求的方式
+			  async:true,//是否异步  默认为异步
+			  data:{mobile:mobile},//当前ajax请求的参数  
+			  dataType:"json",
+			  success: function(data){//发送成功时的代码执行
+			  	
+			      if(data.code==1001){	 
+			      	layer.msg("验证码已发送至您的手机，请注意查收", {icon: 1});
+			      	var date = new Date();
+			        var year  = date.getFullYear(); 
+			        var month  = date.getMonth(); 
+			        var day   = date.getDate(); 
+			        var hour  = date.getHours(); 
+			        var minute = date.getMinutes(); 
+			        var second = date.getSeconds();  
+			        setCountdown(year,month,day,hour,minute+1,second);        
+			      }else{
+			          layer.msg("获取验证码失败", {icon: 5});
+			      }
+			      //re_captcha();
+			  },
+			  error:function(){//失败时的代码执行
+			      layer.msg("获取验证码失败", {icon: 5});
+			      //re_captcha();
+			  }
+
+			})
+		});
+	});
+    //Demo
+    layui.use(['layer', 'form'], function(){
+        var form = layui.form;
+
+        //监听提交
+        
+        form.on('submit(formDemo)', function(data){
+        	
+            var field=data.field;
+            field['type']='mobile'
+			$.ajax({
+			  url:"{{G.url('app/login/siginin')}}",//当前ajax请求的地址
+			  type:'post',//请求的方式
+			  async:true,//是否异步  默认为异步
+			  data:field,//当前ajax请求的参数  
+			  dataType:"json",
+			  success: function(data){//发送成功时的代码执行
+			      if(data.code==2001){
+			          if(data.data.email){
+			              layer.msg("注册失败:"+data.data.email);
+			          }else if(data.data.mobile){
+			              layer.msg("注册失败:"+data.data.mobile);			          
+			          }else if(data.data.username){
+			              layer.msg("注册失败:"+data.data.username);
+			          }else if(data.data.password){
+			              layer.msg("注册失败:"+data.data.password);
+			          }else{
+			              layer.msg("注册失败:"+JSON.stringify(data.data));
+			          }
+			          //re_captcha();
+			          return false;
+			      }
+			      if(data.code==1001){
+			          layer.msg(data.data+"正在跳转........");
+			          setTimeout(function(){
+			              window.location.href="{{G.url('app/index/index')}}";
+			          }, 3000);
+
+			      }else{
+			          layer.msg("注册失败，请重新尝试注册");
+
+			      }
+			      //re_captcha();
+			  },
+			  error:function(){//失败时的代码执行
+			      layer.msg("注册失败，请重新尝试注册");
+			      //re_captcha();
+			  }
+
+			})
+            return false;
+        });
+    });
+</script>
+<script>
+
+    /**
+     * 刷新验证码
+     */
+    function re_captcha() {
+        var url = "{{ G.url('app/login/captcha',{'captcha':'random'}) }}";
+        var random = Math.random();
+        url = url.replace("random", random);//使用js自带函数进行变量替换
+        document.getElementById('c2c98f0de5a04167a9e427d883690ff6').src=url;
+    }
+
+  // setCountdown(2099,1,1);
+  
+  // laydate.render({
+  //   elem: '#test1'
+  //   ,type: 'datetime'
+  //   ,done: function(value, date){
+  //     setCountdown(date.year, date.month - 1, date.date, date.hours, date.minutes, date.seconds);
+  //   }
+  // });
+
+
+</script>
+
+{{ include("common/footer.html")}}

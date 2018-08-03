@@ -1,0 +1,145 @@
+{{ include("common/header.html")}}
+
+<div class="layui-container fly-marginTop">
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user">
+            <ul class="layui-tab-title">
+                <li><a href="{{G.url('app/login/index')}}">登入</a></li>
+                <li class="layui-this">注册</li>
+            </ul>
+            <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form layui-form-pane">
+                        <form method="post">
+                            <div class="layui-form-item">
+                                <label for="L_email" class="layui-form-label">邮箱</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="L_username" class="layui-form-label">用户名</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off" class="layui-input">
+
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="L_pass" class="layui-form-label">密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="L_repass" class="layui-form-label">确认密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-form-item">
+                                    <label for="L_vercode" class="layui-form-label">验证码</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="L_vercode" name="vercode"  required lay-verify="required" placeholder="请回答后面的验证码" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid" style="padding:0px 0!important;margin-top:-2.5px;">
+                                        <img  onclick="javascript:re_captcha();" src="{{ G.url('app/login/captcha') }}"  alt="验证码" title="刷新图片" width="100" height="45" id="c2c98f0de5a04167a9e427d883690ff6" border="0">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <button class="layui-btn"  lay-submit lay-filter="formDemo">立即注册</button>
+                                </div>
+                                {% if modules[0].dir_name == 'login' %}
+                                <div class="layui-form-item fly-form-app">
+                                    <span>或者直接使用社交账号快捷注册</span>
+                                    {% if config['qq']['QQ_STATUS'] == 'on' %}
+                                    <a href="{{G.url('app/registers/login',{'type':'qq'})}}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
+                                    {% endif %}
+                                    {% if config['weixin']['WEIXIN_STATUS'] == 'on' %}
+                                    <a href="{{G.url('app/registers/login',{'type':'weixin'})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" class="mine-icon" title="微信登入"><i class="mine-icon" style="font-size: 20px;color:green;">&#xe628;</i></a>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    //Demo
+    layui.use(['layer', 'form'], function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+
+
+            var field=data.field;
+            field['type']='email';
+            $.ajax({
+                url:"{{G.url('app/login/siginin')}}",//当前ajax请求的地址
+                type:'post',//请求的方式
+                async:true,//是否异步  默认为异步
+                data:field,//当前ajax请求的参数  
+                dataType:"json",
+                success: function(data){//发送成功时的代码执行
+                    if(data.code==2001){
+                        if(data.data.email){
+                            layer.msg("注册失败:"+data.data.email);
+                        }else if(data.data.username){
+                            layer.msg("注册失败:"+data.data.username);
+                        }else if(data.data.password){
+                            layer.msg("注册失败:"+data.data.password);
+                        }else{
+                            layer.msg("注册失败:"+JSON.stringify(data.data));
+                        }
+                        re_captcha();
+                        return false;
+                    }
+                    if(data.code==1001){
+                        layer.msg(data.data+"正在跳转........");
+                        setTimeout(function(){
+                            window.location.href="{{G.url('app/index/index')}}";
+                        }, 3000);
+
+                    }else{
+                        layer.msg("注册失败，请重新尝试注册");
+
+                    }
+                    re_captcha();
+                },
+                error:function(){//失败时的代码执行
+                    layer.msg("注册失败，请重新尝试注册");
+                    re_captcha();
+                }
+
+            })
+            return false;
+        });
+    });
+</script>
+<script>
+
+    /**
+     * 刷新验证码
+     */
+    function re_captcha() {
+        var url = "{{ G.url('app/login/captcha',{'captcha':'random'}) }}";
+        var random = Math.random();
+        url = url.replace("random", random);//使用js自带函数进行变量替换
+        document.getElementById('c2c98f0de5a04167a9e427d883690ff6').src=url;
+    }
+
+
+
+
+</script>
+
+{{ include("common/footer.html")}}

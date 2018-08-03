@@ -1,0 +1,172 @@
+{{ include("common/header.html")}}
+
+<div class="layui-container fly-marginTop fly-user-main">
+
+  {{ include("users/usernav.html")}}
+
+
+
+  
+  <div class="fly-panel fly-panel-user" pad20>
+	  <div class="layui-tab layui-tab-brief" lay-filter="user" id="LAY_msg" style="margin-top: 15px;">
+	    <button class="layui-btn layui-btn-danger" id="LAY_delallmsg" onclick="delAll()">清空全部消息</button>
+        <div id="LAY_minemsg" style="margin-top: 10px;">
+          <!--<div class="fly-none">您暂时没有最新消息</div>-->
+          <ul class="mine-msg">
+            {% for data in list %}
+            <li id="data-{{ data.id }}" data-id="{{ data.id }}">
+              <blockquote class="layui-elem-quote">
+                <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" target="_blank"><cite>{{ data.username }}</cite></a>在<a
+                      target="_blank" href="{{ G.url('app/detail/index',{'id':data.posts_id})}}"><cite>{{ data.posts_title
+                }}</cite></a>回复了消息
+              </blockquote>
+              <p>
+               <!-- <span>{{ data.add_time|date('Y-m-d H:i:s') }}</span>-->
+                <span class="time_str">{{data.add_time}}</span>
+                <a href="javascript:;" style="height:32px;line-height: 32px;width: 60px;" class="layui-btn layui-btn-small layui-btn-danger"
+                   onclick="del('{{ data.id }}')" >删除</a>
+              </p>
+            </li>
+            {% endfor %}
+
+          </ul>
+        </div>
+        <div class="pages">
+          <div id="pages"></div>
+        </div>
+	  </div>
+	</div>
+
+</div>
+
+
+
+<script>
+    var testid=1;
+    var url="{{ G.url('app/index/index',{'id':'testid'})}}";
+    url = url.replace("testid", testid);//使用js自带函数进行变量替换
+    /**
+     * 构造分页功能
+     */
+    layui.use('laypage', function(){
+        var laypage = layui.laypage;
+        //完整功能
+        laypage.render({
+            elem: 'pages'
+            ,count: "{{pagination.total}}", //数据总数，从服务端得到
+            limit:"{{pagination.page_size}}",
+            curr:"{{pagination.current_page}}",
+            layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
+            ,jump: function(obj,first){
+                var url="{{ G.url('app/users/message',{'current_page':'currs','page_size':'limit'})}}";
+                /**
+                 * 替换处理
+                 * @type {string}
+                 */
+                url = url.replace("currs", obj.curr);
+                url = url.replace("limit", obj.limit);
+                //首次不执行
+                if(!first){
+                    window.location.href=url;//转义amp字符
+                }
+
+            }
+        });
+
+    });
+
+function del(id) {
+
+    layui.use('layer', function(){
+        var layer = layui.layer;
+        //信息框-例2
+        layer.msg('您确定要删除吗？', {
+            time: 0 //不自动关闭
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                var url="{{ G.url('app/users/delMessage',{'id':'massageid','puid':userinfo.uid})}}";
+                url = url.replace("massageid", id);
+                $.ajax({
+                    url : url ,
+                    type : "get" ,
+                    success:function (data) {
+                        if(data.code == 1001){
+
+                            layer.msg("删除成功",{icon:6,time:1500},function(){
+                                $("#data-"+id).remove();
+                            });
+
+                        }else{
+                            layer.msg('删除失败',{icon:5})
+                        }
+                    },
+                    error:function (XmlHttpRequest) {
+                        //console.log(XmlHttpRequest);
+                    }
+                });
+            }
+        });
+    });
+}
+  function delAll() {
+      layui.use('layer', function(){
+          var layer = layui.layer;
+          //信息框-例2
+          layer.msg('您确定要删除吗？', {
+              time: 0 //不自动关闭
+              ,btn: ['确定', '取消']
+              ,yes: function(index){
+                  var url="{{ G.url('app/users/emptyMessage',{'puid':userinfo.uid})}}";
+                  $.ajax({
+                      url : url ,
+                      type : "get" ,
+                      success:function (data) {
+                          if(data.code == 1001){
+                              layer.msg("删除成功",{icon:6,time:1500},function(){
+                                  window.location.reload();
+                              });
+
+                          }else{
+                              layer.msg(data.message,{icon:5})
+                          }
+                      },
+                      error:function (XmlHttpRequest) {
+                       //   console.log(XmlHttpRequest);
+                      }
+                  });
+              }
+          });
+      });
+
+  }
+
+
+</script>
+<script>
+    layui.use(['util','jquery'], function(){
+        var util = layui.util;
+        var $ = layui.$ //由于layer弹层依赖jQuery，所以可以直接得到
+        var setTimeAgo = function(y, M, d, H, m, s){
+            var str = util.timeAgo(new Date(y, M||0, d||1, H||0, m||0, s||0));
+            return str
+        };
+        $(function(){
+            $(".time_str").each(function(){
+                var timestamp=$(this).text()
+                //console.log($(this).text())
+                var date = new Date();
+                date.setTime(timestamp * 1000);
+                var year  = date.getFullYear();
+                var month  = date.getMonth();
+                var day   = date.getDate();
+                var hour  = date.getHours();
+                var minute = date.getMinutes();
+                var second = date.getSeconds();
+                var str=setTimeAgo(year,month,day,hour,minute,second);
+                console.log(str)
+                $(this).html(str)
+            });
+        })
+    });
+</script>
+{{ include("common/footer.html")}}

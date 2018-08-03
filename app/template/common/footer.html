@@ -1,0 +1,64 @@
+<div class="fly-footer">
+
+  <p><!--作者耗费一年心血所做匠心产品,请手下留情，保留作者名称及官网链接,感谢!。-->
+    <a href="http://www.calfbb.com/" target="_blank">Powered by Calfbbs</a>  <a href="http://www.calfbb.com/" target="_blank">2018-2028 &copy;</a></p>
+  <p>
+
+    <a href="#" >版权所有:{{copyright}}</a>
+    <a href="#" >备案/许可证号:{{icp}}</a>
+
+  </p>
+</div>
+
+<!--<form action="http://cn.bing.com/search" class="fly-search">-->
+  <!--<i class="iconfont icon-sousuo"></i>-->
+  <!--<input class="layui-input" autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q">-->
+<!--</form>-->
+<script>
+
+//注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element','layer'], function(){
+        var element = layui.element;
+        var layer=layui.layer;
+//搜索
+        $('.fly-search').click(function(){
+            layer.open({
+                type: 1
+                ,title: false
+                ,closeBtn: false
+                //,shade: [0.1, '#fff']
+                ,shadeClose: true
+                ,maxWidth: 10000
+                ,skin: 'fly-layer-search'
+                ,content: ['<form action="{{ G.url("app/search/search",{"keyword":"text"})}}">'
+                    ,'<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q">'
+                    ,'</form>'].join('')
+                ,success: function(layero){
+                    var input = layero.find('input');
+                    input.focus();
+
+                    layero.find('form').submit(function(){
+                        var val = input.val();
+                        if(val.replace(/\s/g, '') === ''){
+                            return false;
+                        }
+                        var text=input.val();
+                        input.val('搜索帖子: '+ text);
+                        var url="{{ G.url('app/search/search',{'keyword':'text'})}}";
+                        url = url.replace("text", text);
+                        window.location.href=url;
+                        return false;
+
+                    });
+                }
+            })
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+
+{{ include("common/header.html")}}
+<div class="admin">
+    {{ include("common/nav.html")}}
+    <link rel="stylesheet" href="{{_G['APP']}}/resource/wangEditor/css/wangEditor.min.css">
+    <script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{_G['APP']}}/resource/wangEditor/js/wangEditor.min.js"></script>
+    <div class="aright">
+        <style type="text/css">
+            .tpt_sels a{padding-right:15px;position:relative}
+            .tpt_sels a{padding:0 20px 0 8px;color:#3B6268;background:#FFFFBA;border:1px #F8E06E solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_pres a.selected{padding:0 8px;color:#3B6268;background:#FFFFBA;border:1px #F8E06E solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_pres a{padding:0 8px;color:#fff;background:#5AC7A9;border:1px #5AC7A9 solid;margin-right:5px;margin-bottom:5px;font-size:14px;height:26px;line-height:26px;display:block;float:left}
+            .tpt_sels a em{width: 12px;height: 12px;font-style: normal;display: block;position: absolute;top: 7px;right: 4px;z-index: 2;background: url(/blog/Public/img/sx.png) no-repeat 0 0;}
+            .wangEditor-menu-container .menu-item a {padding: 12px 0;}
+            .wangEditor-menu-container .menu-item {height: 37px;width: 37px;}
+            .wangEditor-menu-container .menu-group {padding: 0;}
+            .wangEditor-container {border: 1px solid #e6e6e6;}
+        </style>
+        <fieldset class="layui-elem-field layui-field-title" style="margin: 20px 30px 20px 20px;">
+            <legend>修改广告</legend>
+        </fieldset>
+
+        <form class="layui-form bform" method="post" action="{{ G.url('admin/advertisement/edit')}}" enctype="multipart/form-data">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">广告名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" required="" lay-verify="required" placeholder="必填内容" autocomplete="off" class="layui-input" value="{{data.name}}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">广告地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="url_path" required="" lay-verify="required" placeholder="必填内容" autocomplete="off" class="layui-input" value="{{data.url_path}}">
+                </div>
+            </div>
+            <div class="layui-form-item" style="width: 300px;">
+                <label class="layui-form-label">广告位置</label>
+                <div class="layui-input-block">
+                    <select name="cid">
+                        <option value="1"  {% if data.cid==1 %}selected{% endif %} >首页</option>
+                        <option value="2" {% if data.cid==2 %}selected{% endif %}>分类页</option>
+                        <option value="3" {% if data.cid==3 %}selected{% endif %}>帖子详情页</option>
+                        <option value="4" {% if data.cid==4 %}selected{% endif %}>友情链接</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">广告LOGO</label>
+                <div class="layui-input-block">
+                    <div class="file-box">
+
+                        <button type="button" class="layui-btn" id="upload">
+                            上传图片
+                        </button>&nbsp;&nbsp;图片尺寸350X60
+                        <input type="hidden" name="image" value="{{data.image}}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <img width="115" id="image" height="40" src="{{_G['ATTACHMENT_ROOT']}}/{{data.image}}" alt=""/>
+
+
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">单选框</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="type" value="1" title="文字广告" {% if data.type==1 %}checked{% endif %}>
+                    <input type="radio" name="type" value="2" title="图片广告"  {% if data.type==2 %}checked{% endif %} >
+                </div>
+            </div>
+            <input type="hidden" name="id" value="{{data.id}}"/>
+            <input type="hidden" name="submit" value="1"/>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
+                    <button class="layui-btn layui-btn-primary" onclick="history.go(-1)">返回</button>
+                </div>
+            </div>
+
+        </form>
+
+        <script>
+
+            layui.use(['form','upload'], function(){
+                var upload = layui.upload;
+                /**
+                 * 图片上传
+                 */
+                var uploadInst = upload.render({
+                    elem: '#upload' //绑定元素
+                    ,url:"{{ G.url('admin/files/uploadFile')}}" //上传接口
+                    ,method:"post"
+                    ,data:{width:350}
+                    ,done: function(res){
+                        if(res.code==1001 && res.data){
+                            $('#image').attr('src',"{{_G['ATTACHMENT_ROOT']}}/"+res.data);
+                            $('input[name=image]').val(res.data);
+                        }
+                    }
+                    ,error: function(res){
+
+                    }
+                });
+            });
+
+
+        </script>
+
+    </div>
+</div>
+</body>
+</html>

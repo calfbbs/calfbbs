@@ -1,0 +1,197 @@
+{{ include("common/header.html")}}
+
+{{ include("common/column.html")}}
+
+<div class="layui-container">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md8">
+      <div class="fly-panel" style="margin-bottom: 0;">
+        
+        <div class="fly-panel-title fly-filter">
+          <a href="{{ G.url('app/search/search',{'status':4,'cid':cid})}}" {% if status==4 %} class="layui-this" {% endif %}>综合</a>
+          <span class="fly-mid"></span>
+          <a href="{{ G.url('app/search/search',{'status':0,'cid':cid})}}" {% if status==0 %} class="layui-this" {% endif %}>未结</a>
+          <span class="fly-mid"></span>
+          <a href="{{ G.url('app/search/search',{'status':1,'cid':cid})}}" {% if status==1 %} class="layui-this" {% endif %}>已结</a>
+          <span class="fly-mid"></span>
+          <a href="{{ G.url('app/search/search',{'status':2,'cid':cid})}}" {% if status==2 %} class="layui-this" {% endif %}>精华</a>
+          <span class="fly-filter-right layui-hide-xs">
+            <a href="{{ G.url('app/search/search',{'status':status,'orderBy':'create_time','cid':cid})}}" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>
+            <span class="fly-mid"></span>
+            <a href="{{ G.url('app/search/search',{'status':status,'orderBy':'reply_count','cid':cid})}}" {% if orderBy=='reply_count' %} class="layui-this" {% endif %}>按热议</a>
+          </span>
+        </div>
+
+        <ul class="fly-list">     
+          {% for data in topPostList %}     
+          <li>
+            <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-avatar">
+              <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.avatar}}" alt="{{data.username}}">
+            </a>
+            <h2>
+              <a class="layui-badge">{{data.cname}}</a>
+              <a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>
+            </h2>
+            <div class="fly-list-info">
+              <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" link>
+                <cite>{{data.username}}</cite>
+                <!--
+                <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
+                <i class="layui-badge fly-badge-vip">VIP3</i>
+                -->
+              </a>
+              <span class="time_str">{{data.change_time}}</span>
+
+              <span class="layui-hide-xs" title="悬赏飞吻">  <i class="iconfont" title="人气"></i>&nbsp;&nbsp;{{data.visits_count}}</span>
+              <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
+              <span class="fly-list-nums"> 
+                <i class="iconfont icon-pinglun1" title="回答"></i> {{data.reply_count}}
+              </span>
+            </div>
+            <div class="fly-list-badge">              
+              {% if data.top=='1' %}
+              <span class="layui-badge layui-bg-black">置顶</span>
+              {% elseif data.status=='2' %}
+              <span class="layui-badge layui-bg-red">精帖</span>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+          
+        </ul>
+        
+        <!-- <div class="fly-none">没有相关数据</div> -->
+    
+        <!-- <div style="text-align: center">
+          <div class="laypage-main"><span class="laypage-curr">1</span><a href="/jie/page/2/">2</a><a href="/jie/page/3/">3</a><a href="/jie/page/4/">4</a><a href="/jie/page/5/">5</a><span>…</span><a href="/jie/page/148/" class="laypage-last" title="尾页">尾页</a><a href="/jie/page/2/" class="laypage-next">下一页</a></div>
+        </div> -->
+        <div style="text-align: center">
+			<!-- <div class="laypage-main"> -->
+           		<div id="pages"></div>
+       		<!-- </div> -->
+        </div>
+
+      </div>
+    </div>
+    <div class="layui-col-md4">
+      <dl class="fly-panel fly-list-one">
+        <dt class="fly-panel-title">一周热议</dt>
+        {% for data in hotPostList %} 
+        <dd>
+          <a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>
+          <span><i class="iconfont icon-pinglun1"></i> {{data.reply_count}}</span>
+        </dd>
+        {% endfor %}
+        
+
+        <!-- 无数据时 -->
+        <!--
+        <div class="fly-none">没有相关数据</div>
+        -->
+      </dl>
+
+      <div class="fly-panel">
+        <div class="fly-panel-title">
+          这里可作为广告区域
+        </div>
+        {% for data in firstList %}
+          {% if data.type==1 %}
+          <div class="fly-panel-main">
+            <a href="{{data.url_path}}" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">{{data.name}}</a>
+          </div>
+
+          {% else %}
+            <div class="fly-panel-main">
+              <a href="{{data.url_path}}" target="_blank" time-limit="2017.09.25-2099.01.01" >
+              <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.image}}" style="width:350px;height:60px;" alt=""/>
+              </a>
+            </div>
+           {% endif %}
+        {% endfor %}
+        
+      </div>
+      
+      <div class="fly-panel fly-link">
+        <h3 class="fly-panel-title">友情链接</h3>
+        <dl class="fly-panel-main">
+          {% for data in link %}
+          <dd><a href="{{data.url_path}}" target="_blank">{{data.name}}</a><dd>
+          {% endfor %}
+          
+          <dd><a href="mailto:xianxin@layui-inc.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE" class="fly-link">申请友链</a><dd>
+        </dl>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+    /**
+     * 构造分页功能
+     */
+    var status={{status}}
+    var orderBy='{{orderBy}}'
+    var cid={{cid}}
+    
+    layui.use('laypage', function(){
+        var laypage = layui.laypage;
+        //完整功能
+        laypage.render({
+            elem: 'pages',
+            count: "{{pagination.total}}", //数据总数，从服务端得到
+            last:'尾页',
+            limit:"{{pagination.page_size}}",
+            curr:"{{pagination.current_page}}",    		
+            // layout: ['prev', 'page', 'next'],
+            jump: function(obj,first){
+            	// console.log(obj)
+                var url="{{ G.url('app/search/search',{'current_page':'currs','page_size':'limit','status':'statuss','orderBy':'orderByy','cid':'cidd'})}}";
+                console.log(url)
+                /**
+                 * 替换处理
+                  * @type {string}
+                 */
+                url = url.replace("currs", obj.curr);
+                url = url.replace("limit", obj.limit);
+                url = url.replace("statuss", status);
+                url = url.replace("orderByy", orderBy);
+                url = url.replace("cidd", cid);
+                console.log(url)
+                //首次不执行
+                if(!first){
+                    window.location.href=escapeUrl(url);//转义amp字符
+                }
+            }
+        });   
+
+    });
+</script>
+<script>  
+  layui.use(['util','jquery'], function(){
+    var util = layui.util;   
+    var $ = layui.$ //由于layer弹层依赖jQuery，所以可以直接得到
+    var setTimeAgo = function(y, M, d, H, m, s){
+      var str = util.timeAgo(new Date(y, M||0, d||1, H||0, m||0, s||0));
+      return str
+    };
+    $(function(){
+      $(".time_str").each(function(){
+        var timestamp=$(this).text()
+        //console.log($(this).text())
+        var date = new Date();
+        date.setTime(timestamp * 1000);
+        var year  = date.getFullYear(); 
+        var month  = date.getMonth(); 
+        var day   = date.getDate(); 
+        var hour  = date.getHours(); 
+        var minute = date.getMinutes(); 
+        var second = date.getSeconds(); 
+        var str=setTimeAgo(year,month,day,hour,minute,second);
+        console.log(str)
+        $(this).html(str)
+      });
+    })
+  });
+</script>
+{{ include("common/footer.html")}}

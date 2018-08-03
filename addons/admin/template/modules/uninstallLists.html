@@ -1,0 +1,96 @@
+{{ include("common/header.html")}}
+<div class="admin">
+    {{ include("common/moduleNav.html")}}
+    <script src="{{_G['APP']}}/resource/js/jquery-1.4.2.min.js"></script>
+    <link rel="stylesheet" href="{{_G['APP']}}/resource/css/global.css">
+
+    <div class="aright">
+        <div class="aright_1">
+                <div class="fly-main" style="overflow: hidden;">
+
+                    <ul class="fly-case-list">
+
+                        {% for data in list %}
+                        <li data-id="586">
+                            <a class="fly-case-img"  rel="nofollow">
+                                <img src="/{{route.DEFAULT_ADDONS}}/{{data.dir_name}}/{{data.logo}}" alt="{{data.name}}" />
+                                <!--<cite  dir-name="{{data.MODULESDIRNAME}}" class="layui-btn layui-btn-primary layui-btn-small click">进入</cite>-->
+                            </a>
+                            <h2>
+                                <a rel="nofollow">{{data.name}}</a>
+                            </h2>
+                            <p class="fly-case-desc">
+                                {{data.desc}}
+                            </p>
+                            <div class="fly-case-info">
+
+                                <p>作者：{{data.author}}</p>
+                                <p>版本：{{data.version}}</p>
+                                <P>提示：请进行  <a style="color:#01AAED;" href="{{ G.url('admin/modules/checkModules', {dir_name:data.dir_name, })}}">安装</a></P>
+                            </div>
+                        </li>
+                        {% endfor %}
+
+
+
+                    </ul>
+                </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    /**
+     * 构造分页功能
+     */
+    layui.use('laypage', function () {
+        var laypage = layui.laypage;
+
+        //完整功能
+        laypage.render({
+            elem: 'pages',
+            count: "{{pagination.total}}",
+            limit: "{{pagination.page_size}}",
+            curr: "{{pagination.current_page}}",
+            layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+            jump: function (obj, first) {
+                var url = "{{ G.url('admin/modules/modulesList',{'current_page':'currs','page_size':'limit'})}}";
+                /**
+                 * 替换处理
+                 * @type {string}
+                 */
+                url = url.replace("currs", obj.curr);
+                url = url.replace("limit", obj.limit);
+
+                //首次不执行
+                if (!first) window.location.href = escapeUrl(url);//转义amp字符
+
+            }
+        });
+
+    });
+
+    $(".click").click(function () {
+        var dir_name=$(this).attr('dir-name');
+
+        var url = "{{ G.url('modules/admin/index')}}";
+        /**
+         * 替换处理
+         * @type {string}
+         */
+        url = url.replace("modules", dir_name);
+        //首次不执行
+       window.location.href = escapeUrl(url);//转义amp字符
+
+
+    });
+
+
+
+
+</script>
+{{ include("common/footer.html")}}

@@ -1,0 +1,60 @@
+<div class="layui-tab-item  {% if _GPC['t']=='sms' %} layui-show {%endif%}">
+
+    <form class="layui-form bform" method="post" action="{{G.url('admin/setting/saveSms')}}" enctype="multipart/form-data">
+        <div class="layui-form-item">
+            <label class="layui-form-label">启用短信注册/登录</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="SMS_STATUS"  lay-filter="SMS_STATUS" lay-skin="switch" lay-text="开启|关闭"  {% if sms.SMS_STATUS==true %} checked {%endif%}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">accessKeyId</label>
+            <div class="layui-input-block">
+                <input type="text" name="accessKeyId" value="{{sms.accessKeyId}}" placeholder="必填内容"  autocomplete="off" class="layui-input">
+            </div>
+        </div>        
+        <div class="layui-form-item">
+            <label class="layui-form-label">accessKeySecret</label>
+            <div class="layui-input-block">
+                <input type="text" name="accessKeySecret" value="{{sms.accessKeySecret}}" placeholder="必填内容"  autocomplete="off" class="layui-input">
+            </div>
+        </div>   
+        <div class="layui-form-item">
+            <label class="layui-form-label">SignName</label>
+            <div class="layui-input-block">
+                <input type="text" name="SignName" value="{{sms.SignName}}" placeholder="必填内容"  autocomplete="off" class="layui-input">
+            </div>
+        </div>   
+        <div class="layui-form-item">
+            <label class="layui-form-label">templateCode</label>
+            <div class="layui-input-block">
+                <input type="text" name="templateCode" value="{{sms.templateCode}}" placeholder="必填内容"  autocomplete="off" class="layui-input">
+            </div>
+        </div>   
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div id="submitSms" class="layui-btn" >立即提交</div>
+                <button class="layui-btn layui-hide" id="smsSubmit"  lay-submit="" lay-filter="formDemo">立即提交</button>
+                <!-- <button class="layui-btn layui-btn-primary" onclick="history.go(-1)">返回</button>-->
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+    layui.use('form', function(){
+        $("#submitSms").click(function(){
+            layer.confirm('您确定要修改吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $('#smsSubmit').click();
+            }, function(){
+
+            });
+
+        })
+    })
+    
+
+</script>

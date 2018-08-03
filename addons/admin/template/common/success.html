@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>calfbbs 经典开源社区系统,bbs论坛</title>
+</head>
+<script src="{{_G['APP']}}/resource/js/sweetalert.min.js"></script>
+<body>
+
+<script>
+    swal({
+        title: "{{message}}",
+        text: "点击确认进行跳转",
+        icon: "success",
+        button: "确认",
+    }).then((value) => {
+        window.location.href=escape2Html("{{url}}")
+    });
+
+    /**
+     * 字符转义
+     * @param str
+     */
+    function escape2Html(str) {
+        var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+        return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+    }
+</script>
+</body>
+</html>

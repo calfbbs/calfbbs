@@ -1,0 +1,303 @@
+{{ include("common/header.html")}}
+<div class="admin">
+    {{ include("common/nav.html")}}
+    <link rel="stylesheet" href="{{_G['APP']}}/resource/wangEditor/css/wangEditor.min.css">
+    <script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{_G['APP']}}/resource/wangEditor/js/wangEditor.min.js"></script>
+    <style type="text/css">
+        .tpt_sels a {
+            padding-right: 15px;
+            position: relative
+        }
+
+        .tpt_sels a {
+            padding: 0 20px 0 8px;
+            color: #3B6268;
+            background: #FFFFBA;
+            border: 1px #F8E06E solid;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            height: 26px;
+            line-height: 26px;
+            display: block;
+            float: left
+        }
+
+        .tpt_pres a.selected {
+            padding: 0 8px;
+            color: #3B6268;
+            background: #FFFFBA;
+            border: 1px #F8E06E solid;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            height: 26px;
+            line-height: 26px;
+            display: block;
+            float: left
+        }
+
+        .tpt_pres a {
+            padding: 0 8px;
+            color: #fff;
+            background: #5AC7A9;
+            border: 1px #5AC7A9 solid;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            height: 26px;
+            line-height: 26px;
+            display: block;
+            float: left
+        }
+
+        .tpt_sels a em {
+            width: 12px;
+            height: 12px;
+            font-style: normal;
+            display: block;
+            position: absolute;
+            top: 7px;
+            right: 4px;
+            z-index: 2;
+            background: url(/blog/Public/img/sx.png) no-repeat 0 0;
+        }
+
+        .wangEditor-menu-container .menu-item a {
+            padding: 12px 0;
+        }
+
+        .wangEditor-menu-container .menu-item {
+            height: 37px;
+            width: 37px;
+        }
+
+        .wangEditor-menu-container .menu-group {
+            padding: 0;
+        }
+
+        .wangEditor-container {
+            border: 1px solid #e6e6e6;
+        }
+    </style>
+    <div class="aright">
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin: 20px 30px 20px 20px;">
+            <legend>修改帖子</legend>
+        </fieldset>
+
+        <form class="layui-form bform" method="post" action="{{ G.url('admin/posts/edit')}}"
+              enctype="multipart/form-data">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">帖子标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required lay-verify="required" placeholder="必填内容" autocomplete="off"
+                           class="layui-input" value="{{data.title}}">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="width: 300px;">
+                <label class="layui-form-label">所属分类</label>
+                <div class="layui-input-block">
+                    <select name="cid">
+
+                        {% for cate in clssify %}
+                        <option value="{{cate.id}}" {% if cate.id==data.cid %}selected{% endif %}>{{cate.name}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+            </div>
+
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">文章作者</label>-->
+            <!--<div class="layui-input-block">-->
+            <!--<input type="text" name="author" placeholder="请输入内容" autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">点赞数量</label>-->
+            <!--<div class="layui-input-block">-->
+            <!--<input type="text" name="reply_count" placeholder="请输入数量" autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">回贴数量</label>-->
+            <!--<div class="layui-input-block">-->
+            <!--<input type="text" name="reply_count" placeholder="请输入数量" autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">访问量</label>-->
+            <!--<div class="layui-input-block">-->
+            <!--<input type="text" name="reply_count" placeholder="请输入数量" autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">审核显示</label>-->
+            <!--<div class="layui-input-block">-->
+            <!--<input type="checkbox" title="显示" name="open" value="1" checked>-->
+
+            <!--</div>-->
+            <!--</div>-->
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">置顶</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="top" value="0" title="否" {% if data.top==0 %}checked{% endif %}>
+                    <input type="radio" name="top" value="1" title="是" {% if data.top==1 %}checked{% endif %}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="status" value="0" title="未解决" {% if data.status==0 %}checked{% endif %}>
+                    <input type="radio" name="status" value="1" title="已解决" {% if data.status==1 %}checked{% endif %}>
+                    <input type="radio" name="status" value="2" title="精华" {% if data.status==2 %}checked{% endif %}>
+                </div>
+            </div>
+
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">缩略图</label>-->
+            <!--<div class="layui-input-block">-->
+            <!--<div class="file-box">-->
+            <!--<i class="layui-icon">&#xe61f;</i>-->
+            <!--<input class="file-btn" type="button" value="选择图片">-->
+            <!--<input class="file-txt" type="text" name="textfield" id="textfield">-->
+            <!--<input class="file-file" type="file" name="pic" id="pic" size="28" onchange="document.getElementById('textfield').value=this.value" />-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">帖子描述</label>
+                <div class="layui-input-block">
+                    <textarea name="description" placeholder="用于搜索引擎"
+                              class="layui-textarea">{{data.description}}</textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">帖子内容</label>
+                <div class="layui-input-block">
+      <textarea id="textarea" name="text" style="height:600px;width: 100%;">
+      {{data.text}}
+      </textarea>
+                </div>
+            </div>
+
+            <div class="tpt_item">
+                <!--<input type="hidden" name="keywords" value="">-->
+                <input type="hidden" name="uid" value="{{data.uid}}"/>
+                <input type="hidden" name="id" value="{{data.id}}"/>
+                <input type="hidden" name="submit" value="1"/>
+                <div id="tpt_sel" class="tpt_sels" style="margin-top: 20px;">
+		<span style="margin-bottom: 5px;float: left;margin-left: 110px;">
+				</span>
+                    <div class="layui-form-item" style="margin-bottom: 10px;">
+                        <!--<label class="layui-form-label">文章标签</label>-->
+                        <!--<div class="layui-input-block">-->
+                        <!--<input id="tpt_input" type="text" value="" autocomplete="off" class="layui-input" style="width: 400px;float: left;margin-right: 20px;">-->
+                        <!--<button class="layui-btn" id="tpt_btn" type="button" style="background: #FF5722;">添加标签</button>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div id="tpt_pre" class="tpt_pres layui-input-block cl" style="margin-bottom: 0px;">
+                    <!--<a href="javascript:;">新媒体</a><a href="javascript:;">iphone8</a><a href="javascript:;">游戏</a><a href="javascript:;">视频</a><a href="javascript:;">淘宝</a><a href="javascript:;">雷军</a><a href="javascript:;">网红</a><a href="javascript:;">人工智能</a><a href="javascript:;">大朋VR</a><a href="javascript:;">机器人</a><a href="javascript:;">小米</a><a href="javascript:;">综艺</a><a href="javascript:;">真人秀</a><a href="javascript:;">自定义</a> -->
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button class="layui-btn layui-btn-primary" onclick="history.go(-1)">返回</button>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="margin-top: 100px;">
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+        <script type="text/javascript">
+            $(function () {
+                $('#tpt_input').keydown(function (e) {
+                    if (e.which === 13) {
+                        $("#tpt_btn").click();
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                $("#tpt_sel").on('click', 'a>em', function () {
+                    var name = "keywords";
+                    var tag = $(this).parent().text();
+                    $(this).parent().remove();
+                    var tags = new Array();
+                    $("#tpt_sel").find('a').each(function () {
+                        tags.push($(this).text());
+                    });
+                    $("input[name=" + name + "]").val(tags.join(","));
+                    $("#tpt_pre a:contains('" + tag + "')").removeClass("selected");
+                });
+                $("#tpt_btn").click(function () {
+                    var name = "keywords";
+                    var tags = $.trim($("input[name=" + name + "]").val());
+                    if (tags !== "") {
+                        tags = tags.split(",");
+                    } else {
+                        tags = new Array();
+                    }
+                    var tag = $.trim($("#tpt_input").val());
+                    if (tag !== '' && $.inArray(tag, tags) === -1) {
+                        tags.push(tag);
+                        $("#tpt_pre a:contains('" + tag + "')").addClass("selected");
+                    }
+                    $("#tpt_sel").children('span').empty();
+                    $.each(tags, function (k, v) {
+                        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<em></em></a>');
+                    });
+                    $("input[name=" + name + "]").val(tags.join(","));
+                    $("#tpt_input").val('');
+                });
+                $("#tpt_pre").on('click', 'a:not(.selected)', function () {
+                    var name = "keywords";
+                    var tags = $.trim($("input[name=" + name + "]").val());
+                    if (tags !== "") {
+                        tags = tags.split(",");
+                    } else {
+                        tags = new Array();
+                    }
+                    var tag = $.trim($(this).text());
+                    if (tag !== '' && $.inArray(tag, tags) === -1) {
+                        tags.push(tag);
+                    }
+                    $("#tpt_sel").children('span').empty();
+                    $.each(tags, function (k, v) {
+                        $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<em></em></a>');
+                    });
+                    $("input[name=" + name + "]").val(tags.join(","));
+                    $(this).addClass('selected');
+                });
+            });
+        </script>
+        <script>
+            layui.use('form', function () {
+//                var form = layui.form();
+            });
+        </script>
+        <script type="text/javascript">
+            var editor = new wangEditor('textarea');
+            editor.config.uploadImgUrl = "{{ G.url('admin/posts/doUploadPic') }}";
+            editor.create();
+        </script>
+    </div>
+</div>
+</body>
+</html>

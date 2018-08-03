@@ -1,0 +1,234 @@
+{{ include("common/header.html")}}
+<link rel="stylesheet" href="{{_G['APP']}}/resource/wangEditor/css/wangEditor.min.css">
+<script type="text/javascript" src="{{_G['APP']}}/resource/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{_G['APP']}}/resource/wangEditor/js/wangEditor.min.js"></script>
+<div class="layui-container fly-marginTop">
+  <div class="fly-panel" pad20 style="padding-top: 5px;">
+    <!--<div class="fly-none">没有权限</div>-->
+    <div class="layui-form layui-form-pane">
+      <div class="layui-tab layui-tab-brief" lay-filter="user">
+        <ul class="layui-tab-title">
+          <li class="layui-this">发表新帖<!-- 编辑帖子 --></li>
+        </ul>
+        <div class="layui-form layui-tab-content"  id="LAY_ucm" style="padding: 20px 0;">
+          <div class="layui-tab-item layui-show">
+            <!--<form action="{{ G.url('app/index/add')}}" method="post" enctype="multipart/form-data">-->
+              <div class="layui-row layui-col-space15 layui-form-item">
+                <div class="layui-col-md3">
+                  <label class="layui-form-label">所在分类</label>
+                  <div class="layui-input-block">
+                    <select name="cid" style="display:none;">
+                      {% for cate in clssify %}
+                      <option value="{{cate.id}}">{{cate.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="layui-col-md9">
+                  <label for="L_title" class="layui-form-label">帖子标题</label>
+                  <div class="layui-input-block">
+                    <input type="text" id="L_title" name="title" required lay-verify="required" autocomplete="off" class="layui-input">
+                    <!-- <input type="hidden" name="id" value="{{d.edit.id}}"> -->
+                  </div>
+                </div>
+              </div>
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">帖子描述</label>
+                <div class="layui-input-block">
+                  <textarea id="desc" name="description" placeholder="用于搜索引擎" class="layui-textarea"></textarea>
+                </div>
+              </div>
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">帖子内容</label>
+                <div class="layui-input-block">
+                <textarea id="textarea" name="text" style="height:600px;width: 100%;">
+                <p>请输入内容...</p>
+                </textarea>
+                </div>
+              </div>
+              <!--<div class="layui-form-item">-->
+                <!--<div class="layui-inline">-->
+                  <!--<label class="layui-form-label">悬赏飞吻</label>-->
+                  <!--<div class="layui-input-inline" style="width: 190px;">-->
+                    <!--<select name="experience">-->
+                      <!--<option value="20">20</option>-->
+                      <!--<option value="30">30</option>-->
+                      <!--<option value="50">50</option>-->
+                      <!--<option value="60">60</option>-->
+                      <!--<option value="80">80</option>-->
+                    <!--</select>-->
+                  <!--</div>-->
+                  <!--<div class="layui-form-mid layui-word-aux">发表后无法更改飞吻</div>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <div class="layui-form-item">
+                <label for="L_vercode" class="layui-form-label">验证码验证</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_vercode" name="vercode" required lay-verify="required" placeholder="验证码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid" style="padding:2px 0!important;margin-top:-2px;">
+                    <img  onclick="javascript:re_captcha();" src="{{ G.url('app/index/captcha') }}"  alt="验证码" title="刷新图片" width="100" height="38" id="c2c98f0de5a04167a9e427d883690ff6" border="0">
+                </div>
+              </div>
+              <input type="hidden" name="submit" value="1">
+              <div class="layui-form-item">
+                <div class="layui-btn" onClick="add()">立即发布</div>
+              </div>
+            <!--</form>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    layui.use('form', function () {
+        var form = layui.form;
+
+
+    });
+ /**编辑框**/
+    $(function () {
+        $('#tpt_input').keydown(function (e) {
+            if (e.which === 13) {
+                $("#tpt_btn").click();
+                e.preventDefault();
+                return false;
+            }
+        });
+        $("#tpt_sel").on('click', 'a>em', function () {
+            var name = "keywords";
+            var tag = $(this).parent().text();
+            $(this).parent().remove();
+            var tags = new Array();
+            $("#tpt_sel").find('a').each(function () {
+                tags.push($(this).text());
+            });
+            $("input[name=" + name + "]").val(tags.join(","));
+            $("#tpt_pre a:contains('" + tag + "')").removeClass("selected");
+        });
+        $("#tpt_btn").click(function () {
+            var name = "keywords";
+            var tags = $.trim($("input[name=" + name + "]").val());
+            if (tags !== "") {
+                tags = tags.split(",");
+            } else {
+                tags = new Array();
+            }
+            var tag = $.trim($("#tpt_input").val());
+            if (tag !== '' && $.inArray(tag, tags) === -1) {
+                tags.push(tag);
+                $("#tpt_pre a:contains('" + tag + "')").addClass("selected");
+            }
+            $("#tpt_sel").children('span').empty();
+            $.each(tags, function (k, v) {
+                $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<em></em></a>');
+            });
+            $("input[name=" + name + "]").val(tags.join(","));
+            $("#tpt_input").val('');
+        });
+        $("#tpt_pre").on('click', 'a:not(.selected)', function () {
+            var name = "keywords";
+            var tags = $.trim($("input[name=" + name + "]").val());
+            if (tags !== "") {
+                tags = tags.split(",");
+            } else {
+                tags = new Array();
+            }
+            var tag = $.trim($(this).text());
+            if (tag !== '' && $.inArray(tag, tags) === -1) {
+                tags.push(tag);
+            }
+            $("#tpt_sel").children('span').empty();
+            $.each(tags, function (k, v) {
+                $("#tpt_sel").children('span').append('<a href="javascript:;">' + v + '<em></em></a>');
+            });
+            $("input[name=" + name + "]").val(tags.join(","));
+            $(this).addClass('selected');
+        });
+    });
+</script>
+<script type="text/javascript">
+    var editor = new wangEditor('textarea');
+    editor.config.uploadImgUrl = "{{ G.url('app/index/doUploadPic') }}";
+    editor.create();
+</script>
+<script>
+    /**
+     * 刷新验证码
+     */
+    function re_captcha() {
+        var url = "{{ G.url('app/index/captcha',{'captcha':'random'}) }}";
+        var random = Math.random();
+        url = url.replace("random", random);//使用js自带函数进行变量替换
+        document.getElementById('c2c98f0de5a04167a9e427d883690ff6').src=url;
+    }
+
+    function add() {
+
+        layui.use('layer', function() {
+
+
+
+            var cid = $('select[name=cid]').val();
+            var title = $('input[name=title]').val();
+            var description = $('#desc').val();
+            var text = $('#textarea').val();
+            var vercode = $('input[name=vercode]').val();
+            var submit = $('input[name=submit]').val();;
+
+            if (!title) {
+                layer.msg('帖子标题不能为空');
+                return false;
+            }
+
+            if (!description) {
+                layer.msg('描述不能为空');
+                return false;
+            }
+
+            if (!vercode) {
+                layer.msg('验证码不能为空');
+                return false;
+            }
+
+            $.ajax({
+                url: "{{G.url('app/index/add')}}",//当前ajax请求的地址
+                type: 'post',//请求的方式
+                async: true,//是否异步  默认为异步
+                data: {cid: cid, title: title, description: description, text: text, submit: submit, vercode: vercode},//当前ajax请求的参数  
+                dataType: "json",
+                success: function (data) {//发送成功时的代码执行
+
+                    if (data.code == 2001) {
+                        layer.msg("发布帖子失败:" + data.data);
+                        return false;
+                    }
+                    if (data.code == 1001) {
+                        layer.msg(data.data + "正在跳转........");
+
+                        setTimeout(function () {
+                            window.location.href = "{{G.url('app/index/index')}}";
+                        }, 3000);
+
+                    } else {
+
+                        layer.msg("发布帖子失败，请重新发帖");
+
+                    }
+
+                    re_captcha();
+
+                },
+                error: function () {//失败时的代码执行
+                    layer.msg("发布帖子失败，请重新发帖");
+                    re_captcha();
+                }
+
+            })
+        });
+    }
+</script>
+{{ include("common/footer.html")}}

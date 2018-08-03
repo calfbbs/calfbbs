@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="{{keywords}}">
+  <meta name="description" content="{{ description|e('html_attr') }}-Powered by Calfbbs">
+  <meta name="generator" content="Calfbbs! V1.0" />
+  <meta name="author" content="Calfbbs Team " />
+  <meta name="copyright" content="2018-2028 Calfbbs Inc." />
+    <!-- Favicon -->
+  <link rel="shortcut icon" href="{{_G['APP']}}/resource/images/favicon.jpg">
+
+  <link rel="stylesheet" href="{{_G['APP']}}/resource/layui/css/layui.css">
+  <link rel="stylesheet" href="{{_G['APP']}}/resource/css/global.css">
+  <script src="{{_G['APP']}}/resource/js/jquery-1.4.2.min.js"></script>
+  <script src="{{_G['APP']}}/resource/layui/layui.js"></script>
+  <script src="{{_G['APP']}}/resource/js/calfbbs.js"></script>
+
+</head>
+<body>
+<div class="fly-header layui-bg-black">
+  <div class="layui-container">
+    <a class="fly-logo" href="{{_G['APP_URL']}}">
+      <img src="{{_G['APP']}}/resource/images/logo.png" alt="layui" style="width:137px;height:60px;">
+    </a>
+    <ul class="layui-nav fly-nav layui-hide-xs ">
+
+        {% for data in navList %}
+        <li class="layui-nav-item  {% if data.path==this_url %} layui-this {% endif %}">
+            <a href="{{data.path}}" target="_blank"><!--<i class="iconfont icon-jiaoliu"></i>-->{{data.name}}</a>
+        </li>
+
+        {% endfor %}
+
+
+
+      <!--<li class="layui-nav-item">
+        <a href="case/case.html"><i class="iconfont icon-iconmingxinganli"></i>案例</a>
+      </li>
+      <li class="layui-nav-item">
+        <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
+      </li>
+        <li class="layui-nav-item">
+            <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
+        </li>-->
+    </ul>
+
+    <ul class="layui-nav fly-nav-user">
+
+
+     <!-- <li class="layui-nav-item layui-hide-xs">
+        <a href="" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
+      </li>
+      <li class="layui-nav-item layui-hide-xs">
+        <a href="" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>
+      </li>-->
+      
+      <!-- 登入后的状态 -->
+
+      {% if userinfo=="" %}
+      <li class="layui-nav-item">
+        <a class="iconfont icon-touxiang layui-hide-xs" href="{{G.url('app/login/index')}}"></a>
+      </li>
+      <li class="layui-nav-item">
+        <a href="{{G.url('app/login/index')}}">登入</a>
+      </li>
+      <li class="layui-nav-item">
+        <a href="{{G.url('app/login/signup')}}">注册</a>
+      </li>
+      <!-- <li class="layui-nav-item layui-hide-xs">
+        <a href="{{G.url('app/registers/login',{'type':'qq'})}}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
+      </li>
+      <li class="layui-nav-item layui-hide-xs">
+        <a href="{{G.url('app/registers/login',{'type':'weixin'})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" title="微信登入" class="mine-icon"><i class="mine-icon" style="font-size: 20px;">&#xe628;</i></a>
+      </li> -->
+
+      <!-- <li class="layui-nav-item layui-hide-xs">
+        <a href="{{G.url('app/registers/login',{'type':'qq'})}}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
+      </li>
+      <li class="layui-nav-item layui-hide-xs">
+        <a href="{{G.url('app/registers/login',{'type':'weixin'})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" title="微信登入" class="mine-icon"><i class="mine-icon" style="font-size: 20px;">&#xe628;</i></a>
+      </li> -->
+
+      {% else %}
+      <li class="layui-nav-item">
+        <a class="fly-nav-avatar" href="{{G.url('app/users/home',{'uid':userinfo.uid})}}">
+          <cite class="layui-hide-xs">{{userinfo.username}}</cite>
+          <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
+          <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
+          <img src="{{_G['ATTACHMENT_ROOT']}}/{{userinfo.avatar}}">
+        </a>
+        <dl class="layui-nav-child">
+            <dd><a href="{{G.url('app/users/home',{'uid':userinfo.uid})}}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+            <dd><a href="{{G.url('app/users/index')}}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>帖子管理</a></dd>
+          <dd><a href="{{G.url('app/users/set',{'uid':userinfo.uid})}}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+          <dd><a href="{{G.url('app/users/message')}}"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+
+
+          <hr style="margin: 5px 0;">
+          <dd><a href="{{G.url('app/login/loginout')}}" style="text-align: center;">退出</a></dd>
+        </dl>
+      </li>
+      {% endif %}
+
+      
+    </ul>
+  </div>
+</div>
