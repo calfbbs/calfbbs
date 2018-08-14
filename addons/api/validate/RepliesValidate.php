@@ -42,7 +42,7 @@ class RepliesValidate  extends BaseValidate
 
         $validator
             ->required('该参数值不能为空')
-
+            ->minlength('1', '该参数必须知识一个非空字符')
             ->validate('reply_text');
 
         return $this->returnValidate($validator);
