@@ -20,10 +20,10 @@ return array(
         ['m'=>'app', 'c'=>'users', 'a'=>'message', 'paramete'=>'{uid}'],
     'loginout'=>
         ['m'=>'app', 'c'=>'login', 'a'=>'loginout', 'paramete'=>''],
-    'search'=>
-        ['m'=>'app', 'c'=>'search', 'a'=>'search', 'paramete'=>'{status}-{orderBy}-{cid}'],
     'search-cid'=>
         ['m'=>'app', 'c'=>'search', 'a'=>'search', 'paramete'=>'{cid}'],
+    'search'=>
+        ['m'=>'app', 'c'=>'search', 'a'=>'search', 'paramete'=>'{status}-{orderBy}-{cid}'],
     'sear'=>
         ['m'=>'app', 'c'=>'search', 'a'=>'search', 'paramete'=>'{status-cid}'],
     'page'=>
