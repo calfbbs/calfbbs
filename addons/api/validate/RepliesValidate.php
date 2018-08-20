@@ -46,6 +46,7 @@ class RepliesValidate  extends BaseValidate
                 $val = preg_replace("/<[^><]*script[^><]*>/i",'',$val);
                 return $val;
             })
+            ->minlength('1', '该参数必须知识一个非空字符')
 
             ->validate('reply_text');
 
