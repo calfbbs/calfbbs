@@ -65,45 +65,33 @@
 
       {% if userinfo=="" %}
       <li class="layui-nav-item">
-        <a class="iconfont icon-touxiang layui-hide-xs" href="{{G.url('app/login/index')}}"></a>
+        <a class="iconfont icon-touxiang layui-hide-xs" href="login.html"></a>
       </li>
       <li class="layui-nav-item">
-        <a href="{{G.url('app/login/index')}}">登入</a>
+        <a href="login.html">登入</a>
       </li>
       <li class="layui-nav-item">
-        <a href="{{G.url('app/login/signup')}}">注册</a>
+        <a href="signup.html">注册</a>
       </li>
-      <!-- <li class="layui-nav-item layui-hide-xs">
-        <a href="{{G.url('app/registers/login',{'type':'qq'})}}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
-      </li>
-      <li class="layui-nav-item layui-hide-xs">
-        <a href="{{G.url('app/registers/login',{'type':'weixin'})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" title="微信登入" class="mine-icon"><i class="mine-icon" style="font-size: 20px;">&#xe628;</i></a>
-      </li> -->
-
-      <!-- <li class="layui-nav-item layui-hide-xs">
-        <a href="{{G.url('app/registers/login',{'type':'qq'})}}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
-      </li>
-      <li class="layui-nav-item layui-hide-xs">
-        <a href="{{G.url('app/registers/login',{'type':'weixin'})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" title="微信登入" class="mine-icon"><i class="mine-icon" style="font-size: 20px;">&#xe628;</i></a>
-      </li> -->
 
       {% else %}
       <li class="layui-nav-item">
-        <a class="fly-nav-avatar" href="{{G.url('app/users/home',{'uid':userinfo.uid})}}">
+          <a class="fly-nav-avatar" href="user-home-{{userinfo.uid}}.html">
+              <!--<a class="fly-nav-avatar" href="{{G.url('app/users/home',{'uid':userinfo.uid})}}">-->
           <cite class="layui-hide-xs">{{userinfo.username}}</cite>
           <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
           <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
           <img src="{{_G['ATTACHMENT_ROOT']}}/{{userinfo.avatar}}">
         </a>
         <dl class="layui-nav-child">
-            <dd><a href="{{G.url('app/users/home',{'uid':userinfo.uid})}}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
-            <dd><a href="{{G.url('app/users/index')}}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>帖子管理</a></dd>
-          <dd><a href="{{G.url('app/users/set',{'uid':userinfo.uid})}}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
-          <dd><a href="{{G.url('app/users/message')}}"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+            <dd><a href="user-home-{{userinfo.uid}}.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+            <dd><a href="user-index.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>帖子管理</a></dd>
+          <dd><a href="user-set-{{userinfo.uid}}.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+          <dd><a href="user-message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
 
 
           <hr style="margin: 5px 0;">
-          <dd><a href="{{G.url('app/login/loginout')}}" style="text-align: center;">退出</a></dd>
+          <dd><a href="loginout.html" style="text-align: center;">退出</a></dd>
         </dl>
       </li>
       {% endif %}

@@ -30,7 +30,7 @@
                 ,shadeClose: true
                 ,maxWidth: 10000
                 ,skin: 'fly-layer-search'
-                ,content: ['<form action="{{ G.url("app/search/search",{"keyword":"text"})}}">'
+                ,content: ['<form action="keyword-text.html">'
                     ,'<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q">'
                     ,'</form>'].join('')
                 ,success: function(layero){
@@ -44,8 +44,11 @@
                         }
                         var text=input.val();
                         input.val('搜索帖子: '+ text);
-                        var url="{{ G.url('app/search/search',{'keyword':'text'})}}";
+                        var url="keyword-text.html";
+
                         url = url.replace("text", text);
+                        url = url.replace(/&amp;/g, "&");
+
                         window.location.href=url;
                         return false;
 

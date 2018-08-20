@@ -28,17 +28,17 @@
                 <div class="layui-col-md9">
                   <label for="L_title" class="layui-form-label">帖子标题</label>
                   <div class="layui-input-block">
-                    <input type="text" id="L_title" name="title" required lay-verify="required" autocomplete="off" class="layui-input" value="{{post.title}}">
+                    <input type="text" id="L_title" name="title" placeholder="请输入帖子标题" required lay-verify="required" autocomplete="off" class="layui-input" value="{{post.title}}">
                     <!-- <input type="hidden" name="id" value="{{d.edit.id}}"> -->
                   </div>
                 </div>
               </div>
-              <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">帖子描述</label>
-                <div class="layui-input-block">
-                  <textarea id="desc"   name="description" placeholder="用于搜索引擎" class="layui-textarea">{{post.description}}</textarea>
-                </div>
-              </div>
+              <!--<div class="layui-form-item layui-form-text">-->
+                <!--<label class="layui-form-label">帖子描述</label>-->
+                <!--<div class="layui-input-block">-->
+                  <!--<textarea id="desc"   name="description" placeholder="用于搜索引擎" class="layui-textarea">{{post.description}}</textarea>-->
+                <!--</div>-->
+              <!--</div>-->
               <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">帖子内容</label>
                 <div class="layui-input-block">
@@ -154,6 +154,57 @@
 <script type="text/javascript">
     var editor = new wangEditor('textarea');
     editor.config.uploadImgUrl = "{{ G.url('app/index/doUploadPic') }}";
+    if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
+        editor.config.menus = [
+            // 'source',
+            'bold',
+            'underline',
+            'fontsize',
+            'link',
+            'emotion',
+            //  '|',
+            'img',
+            'undo',
+        ];
+
+    }else{
+        editor.config.menus = [
+            // 'source',
+            //   '|',
+            'bold',
+            'underline',
+            //  'italic',
+            // 'strikethrough',
+            // 'eraser',
+            'forecolor',
+            'bgcolor',
+            // '|',
+            'quote',
+            'fontfamily',
+            'fontsize',
+            'head',
+            //   'unorderlist',
+            //   'orderlist',
+            //  'alignleft',
+            //  'aligncenter',
+            //   'alignright',
+            //   '|',
+            'link',
+            // 'unlink',
+            'table',
+            'emotion',
+            //  '|',
+            'img',
+            'video',
+            // 'location',
+            'insertcode',
+            //    '|',
+            'undo',
+            'redo',
+            'fullscreen'
+        ];
+
+    }
     editor.create();
 </script>
 <script>
@@ -175,7 +226,7 @@
             var id=$('input[name=id]').val();
             var cid = $('select[name=cid]').val();
             var title = $('input[name=title]').val();
-            var description = $('#desc').val();
+           // var description = $('#desc').val();
             var text = $('#textarea').val();
             var vercode = $('input[name=vercode]').val();
             var submit = $('input[name=submit]').val();;
@@ -185,10 +236,10 @@
                 return false;
             }
 
-            if (!description) {
-                layer.msg('描述不能为空');
-                return false;
-            }
+//            if (!description) {
+//                layer.msg('描述不能为空');
+//                return false;
+//            }
 
             if (!vercode) {
                 layer.msg('验证码不能为空');
@@ -203,7 +254,6 @@
                     id: id,
                     cid: cid,
                     title: title,
-                    description: description,
                     text: text,
                     submit: submit,
                     vercode: vercode,

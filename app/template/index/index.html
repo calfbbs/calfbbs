@@ -16,15 +16,19 @@
         <ul class="fly-list">
           {% for data in topPostList %}
           <li>
-            <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-avatar">
+            <a href="user-home-{{data.uid}}.html" class="fly-avatar">
+              <!--<a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-avatar">-->
+
               <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.avatar}}" alt="{{data.username}}">
             </a>
             <h2>
               <a class="layui-badge">{{data.cname}}</a>
-              <a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>
+              <a href="detail-{{data.id}}.html">{{data.title}}</a>
+              <!--<a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>-->
             </h2>
             <div class="fly-list-info">
-              <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" link>
+              <a href="user-home-{{data.uid}}.html" link>
+                <!--<a href="{{ G.url('app/users/home',{'uid':data.uid})}}" link>-->
                 <cite>{{data.username}}</cite>
               <!--  <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
                 <i class="layui-badge fly-badge-vip">VIP3</i>-->
@@ -58,37 +62,40 @@
         
         <div class="fly-panel-title fly-filter">
           
-          <a href="{{ G.url('app/search/search',{'status':4})}}" class="layui-this" >综合</a>
+          <a href="search-4.html" class="layui-this" >综合</a>
           <span class="fly-mid"></span>
 
-          <a href="{{ G.url('app/search/search',{'status':0})}}" >未结</a>
+          <a href="search-0.html" >未结</a>
           <span class="fly-mid"></span>
           
-          <a href="{{ G.url('app/search/search',{'status':1})}}" >已结</a>
+          <a href="search-1.html" >已结</a>
           <span class="fly-mid"></span>
           
-          <a href="{{ G.url('app/search/search',{'status':2})}}" >精华</a>
+          <a href="search-2.html" >精华</a>
           <span class="fly-filter-right layui-hide-xs">
             
 
-            <a href="{{ G.url('app/search/search',{'status':status,'orderBy':'create_time'})}}" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>
+            <a href="search-{{status}}-create_time.html" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>
+            <!--<a href="{{ G.url('app/search/search',{'status':status,'orderBy':'create_time'})}}" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>-->
             <span class="fly-mid"></span>
-            <a href="{{ G.url('app/search/search',{'status':status,'orderBy':'reply_count'})}}" {% if orderBy=='reply_count' %} class="layui-this" {% endif %}>按热议</a>
+            <a href="search-{{status}}-reply_count.html" {% if orderBy=='reply_count' %} class="layui-this" {% endif %}>按热议</a>
+            <!--<a href="{{ G.url('app/search/search',{'status':status,'orderBy':'reply_count'})}}" {% if orderBy=='reply_count' %} class="layui-this" {% endif %}>按热议</a>-->
           </span>
         </div>
 
         <ul class="fly-list"> 
           {% for data in comprehensivePostList %}         
           <li>
-            <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-avatar">
+            <a href="user-home-{{data.uid}}.html" class="fly-avatar">
+              <!--<a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-avatar">-->
               <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.avatar}}" alt="{{data.username}}">
             </a>
             <h2>
               <a class="layui-badge">{{data.cname}}</a>
-              <a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>
+              <a href="detail-{{data.id}}.html">{{data.title}}</a>
             </h2>
             <div class="fly-list-info">
-              <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" link>
+              <a href="user-home-{{data.uid}}.html" link>
                 <cite>{{data.username}}</cite>
                 <!--
                 <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
@@ -111,7 +118,7 @@
         </ul>
         <div style="text-align: center">
           <div class="laypage-main">
-            <a href="{{ G.url('app/search/search')}}" class="laypage-next">更多求解</a>
+            <a href="search.html" class="laypage-next">更多求解</a>
           </div>
         </div>
 
@@ -119,125 +126,12 @@
     </div>
     <div class="layui-col-md4">
 
-      <!--   <div class="fly-panel">
-        <h3 class="fly-panel-title">温馨通道</h3>
-        <ul class="fly-panel-main fly-list-static">
-          <li>
-            <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-          </li>
-          <li>
-            <a href="http://fly.layui.com/jie/5366/" target="_blank">
-              layui 常见问题的处理和实用干货集锦
-            </a>
-          </li>
-          <li>
-            <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-          </li>
-          <li>
-            <a href="http://fly.layui.com/jie/5366/" target="_blank">
-              layui 常见问题的处理和实用干货集锦
-            </a>
-          </li>
-          <li>
-            <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-          </li>
-        </ul>
-      </div>
-
-
-   <!--   <div class="fly-panel fly-signin">
-        <div class="fly-panel-title">
-          签到
-          <i class="fly-mid"></i>
-          <a href="javascript:;" class="fly-link" id="LAY_signinHelp">说明</a>
-          <i class="fly-mid"></i>
-          <a href="javascript:;" class="fly-link" id="LAY_signinTop">活跃榜<span class="layui-badge-dot"></span></a>
-          <span class="fly-signin-days">已连续签到<cite>16</cite>天</span>
-        </div>
-        <div class="fly-panel-main fly-signin-main">
-          <button class="layui-btn layui-btn-danger" id="LAY_signin">今日签到</button>
-          <span>可获得<cite>5</cite>飞吻</span>
-
-          <!-- 已签到状态 -->
-          <!--
-          <button class="layui-btn layui-btn-disabled">今日已签到</button>
-          <span>获得了<cite>20</cite>飞吻</span>
-          -->
-      <!--      </div>
-        </div>
-
-        <!--     <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank">
-              <h3 class="fly-panel-title">回贴周榜</h3>
-              <dl>
-                <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
-      <!--    <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-         <dd>
-           <a href="./index.php?m=app&c=users&a=home">
-             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-           </a>
-         </dd>
-       </dl>
-     </div>-->
 
     <dl class="fly-panel fly-list-one">
         <dt class="fly-panel-title">一周热议</dt>
         {% for data in hotPostList %} 
         <dd>
-          <a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>
+          <a href="detail-{{data.id}}.html">{{data.title}}</a>
           <span><i class="iconfont icon-pinglun1"></i> {{data.reply_count}}</span>
         </dd>
         {% endfor %}

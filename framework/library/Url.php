@@ -41,7 +41,7 @@ class Url{
             $url=self::pathinfoOne($url,$route,$param,$suffix);
             $url=$url.self::buildParam($param,$suffix,$route);
         }
-        return $url;
+
         return APP_URL.$url;
     }
 

@@ -42,6 +42,10 @@ class RepliesValidate  extends BaseValidate
 
         $validator
             ->required('该参数值不能为空')
+            ->filter(function($val) {
+                $val = preg_replace("/<[^><]*script[^><]*>/i",'',$val);
+                return $val;
+            })
 
             ->validate('reply_text');
 
@@ -141,6 +145,10 @@ class RepliesValidate  extends BaseValidate
 
         $validator
             ->required('帖子编辑内容不准为空')
+            ->filter(function($val) {
+                $val = preg_replace("/<[^><]*script[^><]*>/i",'',$val);
+                return $val;
+            })
             ->validate('reply_text');
 
 

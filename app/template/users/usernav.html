@@ -1,24 +1,24 @@
 <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
     <li class="layui-nav-item {% if G.GPC['a']=='home' %}layui-this {%endif%}">
-        <a href="{{ G.url('app/users/home',{'uid':userinfo.uid})}}">
+        <a href="user-home-{{userinfo.uid}}.html">
             <i class="layui-icon">&#xe609;</i>
             我的主页
         </a>
     </li>
     <li class="layui-nav-item {% if G.GPC['a']=='index' %}layui-this {%endif%}">
-        <a href="{{ G.url('app/users/index')}}">
+        <a href="user-index.html">
             <i class="layui-icon">&#xe612;</i>
             帖子管理
         </a>
     </li>
     <li class="layui-nav-item {% if G.GPC['a']=='set' %}layui-this {% endif %}">
-        <a href="{{ G.url('app/users/set',{'uid':userinfo.uid})}}">
+        <a href="user-set-{{userinfo.uid}}.html">
             <i class="layui-icon">&#xe620;</i>
             基本设置
         </a>
     </li>
     <li class="layui-nav-item {% if G.GPC['a']=='message' %}layui-this {%endif%}">
-        <a href="{{ G.url('app/users/message')}}">
+        <a href="user-message.html">
             <i class="layui-icon">&#xe611;</i>
             我的消息
         </a>

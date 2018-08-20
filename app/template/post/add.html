@@ -26,24 +26,24 @@
                 </div>
 
                 <div class="layui-col-md9">
-                  <label for="L_title" class="layui-form-label">帖子标题</label>
+                  <label for="L_title" class="layui-form-label" >帖子标题</label>
                   <div class="layui-input-block">
-                    <input type="text" id="L_title" name="title" required lay-verify="required" autocomplete="off" class="layui-input">
+                    <input type="text" id="L_title" name="title"  placeholder="请输入帖子标题" required lay-verify="required" autocomplete="off" class="layui-input">
                     <!-- <input type="hidden" name="id" value="{{d.edit.id}}"> -->
                   </div>
                 </div>
               </div>
-              <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">帖子描述</label>
-                <div class="layui-input-block">
-                  <textarea id="desc" name="description" placeholder="用于搜索引擎" class="layui-textarea"></textarea>
-                </div>
-              </div>
+              <!--<div class="layui-form-item layui-form-text">-->
+                <!--<label class="layui-form-label">帖子描述</label>-->
+                <!--<div class="layui-input-block">-->
+                  <!--<textarea id="desc" name="description" placeholder="用于搜索引擎" class="layui-textarea"></textarea>-->
+                <!--</div>-->
+              <!--</div>-->
               <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">帖子内容</label>
                 <div class="layui-input-block">
-                <textarea id="textarea" name="text" style="height:600px;width: 100%;">
-                <p>请输入内容...</p>
+                <textarea id="textarea"  name="text"  placeholder="请输入内容..." style="height:600px;width: 100%;">
+
                 </textarea>
                 </div>
               </div>
@@ -153,6 +153,57 @@
 <script type="text/javascript">
     var editor = new wangEditor('textarea');
     editor.config.uploadImgUrl = "{{ G.url('app/index/doUploadPic') }}";
+    if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
+        editor.config.menus = [
+            // 'source',
+            'bold',
+            'underline',
+            'fontsize',
+            'link',
+            'emotion',
+            //  '|',
+            'img',
+            'undo',
+        ];
+
+    }else{
+        editor.config.menus = [
+            // 'source',
+            //   '|',
+            'bold',
+            'underline',
+            //  'italic',
+            // 'strikethrough',
+            // 'eraser',
+            'forecolor',
+            'bgcolor',
+            // '|',
+            'quote',
+            'fontfamily',
+            'fontsize',
+            'head',
+            //   'unorderlist',
+            //   'orderlist',
+            //  'alignleft',
+            //  'aligncenter',
+            //   'alignright',
+            //   '|',
+            'link',
+            // 'unlink',
+            'table',
+            'emotion',
+            //  '|',
+            'img',
+            'video',
+            // 'location',
+            'insertcode',
+            //    '|',
+            'undo',
+            'redo',
+            'fullscreen'
+        ];
+
+    }
     editor.create();
 </script>
 <script>
@@ -174,7 +225,7 @@
 
             var cid = $('select[name=cid]').val();
             var title = $('input[name=title]').val();
-            var description = $('#desc').val();
+          //  var description = $('#desc').val();
             var text = $('#textarea').val();
             var vercode = $('input[name=vercode]').val();
             var submit = $('input[name=submit]').val();;
@@ -184,10 +235,10 @@
                 return false;
             }
 
-            if (!description) {
-                layer.msg('描述不能为空');
-                return false;
-            }
+//            if (!description) {
+//                layer.msg('描述不能为空');
+//                return false;
+//            }
 
             if (!vercode) {
                 layer.msg('验证码不能为空');
@@ -198,7 +249,7 @@
                 url: "{{G.url('app/post/add')}}",//当前ajax请求的地址
                 type: 'post',//请求的方式
                 async: true,//是否异步  默认为异步
-                data: {cid: cid, title: title, description: description, text: text, submit: submit, vercode: vercode},//当前ajax请求的参数  
+                data: {cid: cid, title: title,  text: text, submit: submit, vercode: vercode},//当前ajax请求的参数  
                 dataType: "json",
                 success: function (data) {//发送成功时的代码执行
 
