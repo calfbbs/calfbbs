@@ -716,7 +716,7 @@ EOT;
         }
 
         //Todo 第一步: 验证email / mobile 是否存在.
-        if(isset($params['mobile'])) {
+        if(!empty($params['mobile'])) {
             $user = $this->getUser(array('mobile' => $params['mobile']));
         }else{
             $user = $this->getUser(array('email' => $params['email']));
