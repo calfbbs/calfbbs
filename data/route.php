@@ -2,7 +2,7 @@
   'DEFAULT_MODULE' => 'app',
   'DEFAULT_CTRL' => 'index',
   'DEFAULT_ACTION' => 'index',
-  'PATH_INFO' => '1',
+  'PATH_INFO' => '4',
   'DEFAULT_ADDONS' => 'addons',
   'CONFIG_STATUS' => true,
   'SUFFIX' => '.html',

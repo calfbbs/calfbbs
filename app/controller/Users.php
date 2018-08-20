@@ -72,7 +72,7 @@ class Users extends Base
             $registerinfo=$register->getRegisterOne(['type'=>'uid','uid'=>$_GPC['uid']]);
             $this->assign('registerinfo',$registerinfo);
         }
-        
+
         $user = new UserModel();
         $userinfo=$user->getUserOne($_GPC['uid']);
         if(($userinfo['email']=='')&&($userinfo['mobile']=='')){

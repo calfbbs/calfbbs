@@ -42,15 +42,19 @@ class PostValidate extends BaseValidate
             ->maxLength(255, '字符太长,不能超过255字节')
             ->validate('title');
         $validator
+            ->filter(function($val) {
+                $val = preg_replace("/<[^><]*script[^><]*>/i",'',$val);
+                return $val;
+            })
             ->minLength(1, '内容不能为空')
             ->validate('text');
 
         //if (isset($data['description'])) {
-        $validator
-            ->minLength(1, '描述不能为空')
-            //->maxLength(4000, '描述字符太长')
-            ->validate('description');
-        //}
+//        $validator
+//            ->minLength(1, '描述不能为空')
+//            //->maxLength(4000, '描述字符太长')
+//            ->validate('description');
+//        //}
 
         /*$validator
             ->required('该参数值不能为空')
@@ -94,14 +98,18 @@ class PostValidate extends BaseValidate
             ->validate('title');
 
         $validator
+            ->filter(function($val) {
+                $val = preg_replace("/<[^><]*script[^><]*>/i",'',$val);
+                return $val;
+            })
             ->minLength(1, '内容不能为空')
             ->validate('text');
 
         //if (isset($data['description'])) {
-        $validator
-            ->minLength(1, '描述不能为空')
-            //->maxLength(4000, '描述字符太长')
-            ->validate('description');
+//        $validator
+//            ->minLength(1, '描述不能为空')
+//            //->maxLength(4000, '描述字符太长')
+//            ->validate('description');
         //}
 
         /**

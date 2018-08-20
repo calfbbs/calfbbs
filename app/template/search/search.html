@@ -8,32 +8,34 @@
       <div class="fly-panel" style="margin-bottom: 0;">
         
         <div class="fly-panel-title fly-filter">
-          <a href="{{ G.url('app/search/search',{'status':4,'cid':cid})}}" {% if status==4 %} class="layui-this" {% endif %}>综合</a>
+          <a href="sear-4-{{cid}}.html" {% if status==4 %} class="layui-this" {% endif %}>综合</a>
+          <!--<a href="{{ G.url('app/search/search',{'status':4,'cid':cid})}}" {% if status==4 %} class="layui-this" {% endif %}>综合</a>-->
           <span class="fly-mid"></span>
-          <a href="{{ G.url('app/search/search',{'status':0,'cid':cid})}}" {% if status==0 %} class="layui-this" {% endif %}>未结</a>
+          <a href="sear-0-{{cid}}.html" {% if status==0 %} class="layui-this" {% endif %}>未结</a>
           <span class="fly-mid"></span>
-          <a href="{{ G.url('app/search/search',{'status':1,'cid':cid})}}" {% if status==1 %} class="layui-this" {% endif %}>已结</a>
+          <a href="sear-1-{{cid}}.html" {% if status==1 %} class="layui-this" {% endif %}>已结</a>
           <span class="fly-mid"></span>
-          <a href="{{ G.url('app/search/search',{'status':2,'cid':cid})}}" {% if status==2 %} class="layui-this" {% endif %}>精华</a>
+          <a href="sear-2-{{cid}}.html" {% if status==2 %} class="layui-this" {% endif %}>精华</a>
           <span class="fly-filter-right layui-hide-xs">
-            <a href="{{ G.url('app/search/search',{'status':status,'orderBy':'create_time','cid':cid})}}" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>
+            <a href="search-{{status}}-create_time-{{cid}}" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>
+            <!--<a href="{{ G.url('app/search/search',{'status':status,'orderBy':'create_time','cid':cid})}}" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>-->
             <span class="fly-mid"></span>
-            <a href="{{ G.url('app/search/search',{'status':status,'orderBy':'reply_count','cid':cid})}}" {% if orderBy=='reply_count' %} class="layui-this" {% endif %}>按热议</a>
+            <a href="search-{{status}}-reply_count-{{cid}}" {% if orderBy=='reply_count' %} class="layui-this" {% endif %}>按热议</a>
           </span>
         </div>
 
         <ul class="fly-list">     
           {% for data in topPostList %}     
           <li>
-            <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-avatar">
+            <a href="user-home-{{data.uid}}.html" class="fly-avatar">
               <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.avatar}}" alt="{{data.username}}">
             </a>
             <h2>
               <a class="layui-badge">{{data.cname}}</a>
-              <a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>
+              <a href="detail-{{data.id}}">{{data.title}}</a>
             </h2>
             <div class="fly-list-info">
-              <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" link>
+              <a href="user-home-{{data.uid}}.html" link>
                 <cite>{{data.username}}</cite>
                 <!--
                 <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
@@ -78,7 +80,7 @@
         <dt class="fly-panel-title">一周热议</dt>
         {% for data in hotPostList %} 
         <dd>
-          <a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>
+          <a href="detail-{{data.id}}">{{data.title}}</a>
           <span><i class="iconfont icon-pinglun1"></i> {{data.reply_count}}</span>
         </dd>
         {% endfor %}
@@ -146,8 +148,9 @@
             // layout: ['prev', 'page', 'next'],
             jump: function(obj,first){
             	// console.log(obj)
-                var url="{{ G.url('app/search/search',{'current_page':'currs','page_size':'limit','status':'statuss','orderBy':'orderByy','cid':'cidd'})}}";
-                console.log(url)
+               // var url="{{ G.url('app/search/search',{'current_page':'currs','page_size':'limit','status':'statuss','orderBy':'orderByy','cid':'cidd'})}}";
+                var url="page-currs-limit-statuss-orderByy-cidd.html";
+
                 /**
                  * 替换处理
                   * @type {string}
@@ -157,7 +160,7 @@
                 url = url.replace("statuss", status);
                 url = url.replace("orderByy", orderBy);
                 url = url.replace("cidd", cid);
-                console.log(url)
+
                 //首次不执行
                 if(!first){
                     window.location.href=escapeUrl(url);//转义amp字符

@@ -111,39 +111,7 @@
                 </div>
             </div>
 
-            <!--<div class="layui-form-item">-->
-            <!--<label class="layui-form-label">文章作者</label>-->
-            <!--<div class="layui-input-block">-->
-            <!--<input type="text" name="author" placeholder="请输入内容" autocomplete="off" class="layui-input">-->
-            <!--</div>-->
-            <!--</div>-->
 
-            <!--<div class="layui-form-item">-->
-            <!--<label class="layui-form-label">点赞数量</label>-->
-            <!--<div class="layui-input-block">-->
-            <!--<input type="text" name="reply_count" placeholder="请输入数量" autocomplete="off" class="layui-input">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="layui-form-item">-->
-            <!--<label class="layui-form-label">回贴数量</label>-->
-            <!--<div class="layui-input-block">-->
-            <!--<input type="text" name="reply_count" placeholder="请输入数量" autocomplete="off" class="layui-input">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="layui-form-item">-->
-            <!--<label class="layui-form-label">访问量</label>-->
-            <!--<div class="layui-input-block">-->
-            <!--<input type="text" name="reply_count" placeholder="请输入数量" autocomplete="off" class="layui-input">-->
-            <!--</div>-->
-            <!--</div>-->
-
-            <!--<div class="layui-form-item">-->
-            <!--<label class="layui-form-label">审核显示</label>-->
-            <!--<div class="layui-input-block">-->
-            <!--<input type="checkbox" title="显示" name="open" value="1" checked>-->
-
-            <!--</div>-->
-            <!--</div>-->
 
             <div class="layui-form-item">
                 <label class="layui-form-label">置顶</label>
@@ -162,25 +130,15 @@
                 </div>
             </div>
 
-            <!--<div class="layui-form-item">-->
-            <!--<label class="layui-form-label">缩略图</label>-->
-            <!--<div class="layui-input-block">-->
-            <!--<div class="file-box">-->
-            <!--<i class="layui-icon">&#xe61f;</i>-->
-            <!--<input class="file-btn" type="button" value="选择图片">-->
-            <!--<input class="file-txt" type="text" name="textfield" id="textfield">-->
-            <!--<input class="file-file" type="file" name="pic" id="pic" size="28" onchange="document.getElementById('textfield').value=this.value" />-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
 
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">帖子描述</label>
-                <div class="layui-input-block">
-                    <textarea name="description" placeholder="用于搜索引擎"
-                              class="layui-textarea">{{data.description}}</textarea>
-                </div>
-            </div>
+
+            <!--<div class="layui-form-item layui-form-text">-->
+                <!--<label class="layui-form-label">帖子描述</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<textarea name="description" placeholder="用于搜索引擎"-->
+                              <!--class="layui-textarea">{{data.description}}</textarea>-->
+                <!--</div>-->
+            <!--</div>-->
 
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">帖子内容</label>
@@ -295,6 +253,57 @@
         <script type="text/javascript">
             var editor = new wangEditor('textarea');
             editor.config.uploadImgUrl = "{{ G.url('admin/posts/doUploadPic') }}";
+            if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
+                editor.config.menus = [
+                    source',
+                    'bold',
+                    'underline',
+                    'fontsize',
+                    'link',
+                    'emotion',
+                    //  '|',
+                    'img',
+                    'undo',
+                ];
+
+            }else{
+                editor.config.menus = [
+                    'source',
+                    //   '|',
+                    'bold',
+                    'underline',
+                    //  'italic',
+                    // 'strikethrough',
+                    // 'eraser',
+                    'forecolor',
+                    'bgcolor',
+                    // '|',
+                    'quote',
+                    'fontfamily',
+                    'fontsize',
+                    'head',
+                    //   'unorderlist',
+                    //   'orderlist',
+                    //  'alignleft',
+                    //  'aligncenter',
+                    //   'alignright',
+                    //   '|',
+                    'link',
+                    // 'unlink',
+                    'table',
+                    'emotion',
+                    //  '|',
+                    'img',
+                    'video',
+                    // 'location',
+                    'insertcode',
+                    //    '|',
+                    'undo',
+                    'redo',
+                    'fullscreen'
+                ];
+
+            }
             editor.create();
         </script>
     </div>

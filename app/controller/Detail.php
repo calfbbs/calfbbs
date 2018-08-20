@@ -38,7 +38,8 @@ class Detail  extends Base
         $posts = $post->getPostOne($post_id);
 
         $title = @$posts['title'] ?  @$posts['title'] :"calfbbs 经典开源社区系统,bbs论坛";
-        $keywords = @$posts['description'] ?  @$posts['description']:"calfbbs 经典开源社区系统,bbs论坛";
+       // $keywords = @$posts['description'] ?  @$posts['description']:"calfbbs 经典开源社区系统,bbs论坛";
+        $keywords=$title;
         $description = @$posts['text'] ?  @strip_tags($posts['text']) :"calfbbs 经典开源社区系统,bbs论坛";
 
         //获取用户信息

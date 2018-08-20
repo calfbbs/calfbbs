@@ -42,11 +42,13 @@
                     </span>
                 </div>
                 <div class="detail-about">
-                    <a class="fly-avatar" href="{{ G.url('app/users/home',{'uid':userInfo['uid']})}}">
+                    <a class="fly-avatar" href="user-home-{{userInfo['uid']}}.html">
+                        <!--<a class="fly-avatar" href="{{ G.url('app/users/home',{'uid':userInfo['uid']})}}">-->
                         <img src="{{_G['ATTACHMENT_ROOT']}}/{{userInfo['avatar']}}" alt="{{ userInfo['username']}}">
                     </a>
                     <div class="fly-detail-user">
-                        <a href="{{ G.url('app/users/home',{'uid':userInfo['uid']})}}" class="fly-link">
+                        <a href="user-home-{{userInfo['uid']}}.html" class="fly-link">
+                            <!--<a href="{{ G.url('app/users/home',{'uid':userInfo['uid']})}}" class="fly-link">-->
                             <cite>{{ userInfo['username'] }}</cite>
                             <!-- <i class="iconfont icon-renzheng" title="认证信息：{{ rows.user.approve }}"></i>
                              <i class="layui-badge fly-badge-vip">VIP3</i>-->
@@ -57,7 +59,8 @@
                         <!--<span style="padding-right: 10px; color: #FF7200">悬赏：60飞吻</span>-->
 
                         {% if userInfo['uid'] == loginUserinfo['uid'] %}
-                        <a href="{{ G.url('app/post/edit',{id:posts.id})}}">  <span class="layui-btn layui-btn-xs jie-admin" type="edit">
+                        <a href="post-edit-{{posts.id}}.html">  <span class="layui-btn layui-btn-xs jie-admin" type="edit">
+                        <!--<a href="{{ G.url('app/post/edit',{id:posts.id})}}">  <span class="layui-btn layui-btn-xs jie-admin" type="edit">-->
                         编辑此贴
 
                         </span></a>  {% endif %}
@@ -83,11 +86,12 @@
                     <li  class="jieda-daan del{{data.id}}">
                         <a name="item-1111111111"></a>
                         <div class="detail-about detail-about-reply">
-                            <a class="fly-avatar" href="{{ G.url('app/users/home',{'uid':data.uid})}}">
+                            <a class="fly-avatar" href="user-home-{{data.uid}}.html">
+                                <!--<a class="fly-avatar" href="{{ G.url('app/users/home',{'uid':data.uid})}}">-->
                                 <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.avatar}}" alt=" ">
                             </a>
                             <div class="fly-detail-user">
-                                <a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-link">
+                                <a href="user-home-{{data.uid}}.html" class="fly-link">
                                     <cite>{{data.username}}</cite>
                                     <!-- <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
                                      <i class="layui-badge fly-badge-vip">VIP3</i>-->
@@ -116,7 +120,8 @@
                         <div class="detail-body jieda-body photos">
                             <p>
                                 {% if data.pusername !="" and puid !=-1%}
-                                @<a href="{{G.url('app/users/home',{'uid':data.puid})}}">{{data.pusername}}</a>
+                                @<a href="user-home-{{data.puid}}.html">{{data.pusername}}</a>
+                                <!--@<a href="{{G.url('app/users/home',{'uid':data.puid})}}">{{data.pusername}}</a>-->
                                 {%endif%}</p>
                             <div id="edit{{data.id}}">{{data.reply_text|e('html_attr')}}</div>
                         </div>
@@ -184,7 +189,8 @@
                 <dt class="fly-panel-title">一周热议</dt>
                 {% for data in hotPostList %}
                 <dd>
-                    <a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>
+                    <a href="detail-{{data.id}}">{{data.title}}</a>
+                    <!--<a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>-->
                     <span><i class="iconfont icon-pinglun1"></i> {{data.reply_count}}</span>
                 </dd>
                 {% endfor %}
@@ -300,7 +306,7 @@
     editor.config.uploadImgUrl = "{{ G.url('app/index/doUploadPic') }}";
     if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
         editor.config.menus = [
-            'source',
+           // 'source',
             'bold',
             'underline',
             'fontsize',
@@ -311,9 +317,11 @@
             'undo',
         ];
 
+        $(".fly-column").attr("style","display:none;")
+
     }else{
         editor.config.menus = [
-            'source',
+           // 'source',
             //   '|',
             'bold',
             'underline',
@@ -360,9 +368,7 @@
 
 </script>
 
-<script type="text/javascript">
 
-</script>
 
 <script>
     var ed;
@@ -678,5 +684,7 @@
         })*/
     }
 </script>
+
+
 
 {{ include("common/footer.html")}}
