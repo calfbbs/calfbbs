@@ -34,10 +34,10 @@ return array(
         ['m'=>'app', 'c'=>'login', 'a'=>'index', 'paramete'=>''],
     'signup'=>
         ['m'=>'app', 'c'=>'login', 'a'=>'signup', 'paramete'=>''],
-    'forget'=>
-        ['m'=>'app', 'c'=>'login', 'a'=>'forget', 'paramete'=>''],
     'forget_mobile'=>
         ['m'=>'app', 'c'=>'login', 'a'=>'forget_mobile', 'paramete'=>''],
+    'forget'=>
+        ['m'=>'app', 'c'=>'login', 'a'=>'forget', 'paramete'=>''],
     'post-add'=>
         ['m'=>'app', 'c'=>'post', 'a'=>'add', 'paramete'=>''],
     'post-edit'=>

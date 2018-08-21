@@ -2,3 +2,4 @@ data/cache
 data/install.lock
 database.php
 data/database.php
+data/sms.php
