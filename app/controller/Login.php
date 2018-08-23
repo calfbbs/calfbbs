@@ -157,7 +157,6 @@ class Login extends Base
 
     public function siginin()
     {
-
         if($_POST['type'] == 'mobile') {
             if(self::$session->get('sms_code') != $_POST['vercode']) {
                 show_json(['code' => 2001, 'message' => '响应错误', 'data' => '验证码输入错误']);
@@ -328,6 +327,10 @@ class Login extends Base
     public function getvercode()
     {
         $data = $this->post(url("api/sms/sendCode"), $_POST);
+        if($data->code==1001){
+            self::$session->set('sms_code',$data->data);
+            $data->data=true;
+        }
         echo json_encode($data);
     }
 

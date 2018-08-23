@@ -36,8 +36,8 @@ class Sms extends BaseModel
         for($i = 0 ; $i<$length ;$i ++){
             $captcha .= $str[rand(0,$max)];
         }
-        $session = new Session();
-        $session->set('sms_code',$captcha);
+       // $session = new Session();
+       // $session->set('sms_code',$captcha);
         return $captcha ;
     }
     /**

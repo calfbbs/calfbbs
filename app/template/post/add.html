@@ -18,6 +18,7 @@
                   <label class="layui-form-label">所在分类</label>
                   <div class="layui-input-block">
                     <select name="cid" style="display:none;">
+                      <option value="">选择</option>
                       {% for cate in clssify %}
                       <option value="{{cate.id}}">{{cate.name}}</option>
                       {% endfor %}
@@ -261,6 +262,8 @@
                             layer.msg("发布帖子失败:" + data.data.text);
                         }else if(data.data.title){
                             layer.msg("发布帖子失败:" + data.data.title);
+                        }else if(data.data.cid){
+                            layer.msg("发布帖子失败: 未选择分类");
                         }else{
                             layer.msg("发布帖子失败:" + JSON.stringify(data.data));
                         }

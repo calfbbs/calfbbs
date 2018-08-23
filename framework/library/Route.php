@@ -36,7 +36,11 @@ class Route
             $path=$this->analysisVar();
             $result=$this->pathinfoFour($route,$path);
             if($result !=true){
-                $this->pathinfoOne($route);
+                if(!empty($path) && !isset($_GET['m'])){
+                    $this->pathinfoTwo($route,$path);
+                }else{
+                    $this->pathinfoOne($route);
+                }
             }
         }else{//如果路由是第一种模式
             $this->pathinfoOne($route);
