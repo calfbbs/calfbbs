@@ -42,5 +42,9 @@ return array(
         ['m'=>'app', 'c'=>'post', 'a'=>'add', 'paramete'=>''],
     'post-edit'=>
         ['m'=>'app', 'c'=>'post', 'a'=>'edit', 'paramete'=>'{id}'],
+    'bind-login'=>
+        ['m'=>'app', 'c'=>'registers', 'a'=>'login', 'paramete'=>'{type}'],
+    'bind-bind'=>
+        ['m'=>'app', 'c'=>'registers', 'a'=>'bind', 'paramete'=>'{type}'],
 
 );
