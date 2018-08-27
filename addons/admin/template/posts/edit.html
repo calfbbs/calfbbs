@@ -127,6 +127,7 @@
                     <input type="radio" name="status" value="0" title="未解决" {% if data.status==0 %}checked{% endif %}>
                     <input type="radio" name="status" value="1" title="已解决" {% if data.status==1 %}checked{% endif %}>
                     <input type="radio" name="status" value="2" title="精华" {% if data.status==2 %}checked{% endif %}>
+                    <input type="radio" name="status" value="3" title="黑名单" {% if data.status==3 %}checked{% endif %}>
                 </div>
             </div>
 
@@ -255,7 +256,7 @@
             editor.config.uploadImgUrl = "{{ G.url('admin/posts/doUploadPic') }}";
             if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
                 editor.config.menus = [
-                    source',
+                    'source',
                     'bold',
                     'underline',
                     'fontsize',

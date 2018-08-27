@@ -152,13 +152,16 @@ class PostModel extends BaseModel
             ' AS p LEFT JOIN ' . table_prefix(self::$userTableName) . " AS u ON u.uid = p.uid" .
             ' LEFT JOIN ' . table_prefix(self::$classfyTableName) . ' AS c ON c . id = p . cid ';
 
-        if (is_bool($data['status'])) {
-            $sql .= 'WHERE p . status != :status ';
+        //if (is_bool($data['status'])) {
+          //  $sql .= 'WHERE p . status != :status ';
             /**
              * 3已删除
              */
-            $where[':status'] = 3;
-        } else {
+        //    $where[':status'] = 3;
+       // } else {
+        // }
+        $where=[];
+        if ( !empty($data['status'])) {
             $sql .= 'WHERE p . status = :status ';
 
             $where[':status'] = $data['status'];
