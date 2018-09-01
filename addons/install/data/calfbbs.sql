@@ -79,6 +79,7 @@ CREATE TABLE `#__modules` (
   `logo` varchar(100) DEFAULT NULL COMMENT '插件logo',
   `version` varchar(50) DEFAULT NULL COMMENT '插件版本',
   `install_time` int(11) DEFAULT NULL COMMENT '安装时间',
+  `dir_name` varchar(100) NOT NULL COMMENT '插件目录名称',
   PRIMARY KEY (`mid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
