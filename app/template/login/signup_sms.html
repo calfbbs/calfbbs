@@ -4,7 +4,7 @@
   <div class="fly-panel fly-panel-user" pad20>
     <div class="layui-tab layui-tab-brief" lay-filter="user">
       <ul class="layui-tab-title">
-        <li><a href="login.html">登入</a></li>
+        <li><a href="{{SUFFIX}}login.html">登入</a></li>
         <li class="layui-this">注册</li>
       </ul>
       <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
@@ -71,7 +71,7 @@
 					<a href="{{G.url('app/registers/login',{'type':'qq'})}}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
 					{% endif %}
                     {% if config['weixin']['WEIXIN_STATUS'] == 'on' %}
-					<a href="{{G.url('app/registers/login',{'type':'weixin'})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" class="mine-icon" title="微信登入"><i class="mine-icon" style="font-size: 20px;color:green;">&#xe628;</i></a>
+					<a href="{{G.url('app/registers/login',{'type':config['weixin']['type']})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" class="mine-icon" title="微信登入"><i class="mine-icon" style="font-size: 20px;color:green;">&#xe628;</i></a>
 					{% endif %}
 				</div>
 				

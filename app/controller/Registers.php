@@ -11,7 +11,7 @@ use App\servers\register\WeixinServers;
 use App\servers\register\QQServers;
 use  Framework\library\Session;
 class Registers
-{	
+{
     static public $conf = array();
     /**
      * 获取配置信息
@@ -20,13 +20,13 @@ class Registers
         $route = \Framework\library\conf::all('route');
         $conf = CALFBB.'/'.$route['DEFAULT_ADDONS'].'/'.$modules."/config/".$file.".conf";
 
-        
+
         if(is_file($conf)) {
             if(isset(self::$conf[$file])) {
                 return self::$conf[$file];
-            } else {  
+            } else {
                 self::$conf[$file] = include $conf;
-                return self::$conf[$file];                
+                return self::$conf[$file];
             }
         }
         return false;
@@ -35,28 +35,28 @@ class Registers
      * 登录
      */
     public function login()
-    { 
+    {
         global $_GPC;
         $config=$this->getConf('login',$_GPC['type']);
         $appid=$config['appid'];
         $appsecret=$config['appsecret'];
-        if($_GPC['type']=='weixin'){
-            $servers=new WeixinServers($appid,$appsecret);
+        if(($_GPC['type']=='weixin_public') || ($_GPC['type']=='weixin_open')){
+            $servers=new WeixinServers($appid,$appsecret,$_GPC['type']);
             $servers->login();
         }
         if($_GPC['type']=='qq'){
             $servers=new QQServers($appid,$appsecret);
             $servers->login();
         }
-        
-    }   
+
+    }
     public function siginin(){
         global $_GPC;
         $config=$this->getConf('login',$_GPC['type']);
         $appid=$config['appid'];
         $appsecret=$config['appsecret'];
-        if($_GPC['type']=='weixin'){
-            $servers=new WeixinServers($appid,$appsecret);
+        if(($_GPC['type']=='weixin_public') || ($_GPC['type']=='weixin_open')){
+            $servers=new WeixinServers($appid,$appsecret,$_GPC['type']);
             $data=$servers->siginin();
         }
         if($_GPC['type']=='qq'){
@@ -70,8 +70,8 @@ class Registers
         $config=$this->getConf('login',$_GPC['type']);
         $appid=$config['appid'];
         $appsecret=$config['appsecret'];
-        if($_GPC['type']=='weixin'){
-            $servers=new WeixinServers($appid,$appsecret);
+        if(($_GPC['type']=='weixin_public') || ($_GPC['type']=='weixin_open')){
+            $servers=new WeixinServers($appid,$appsecret,$_GPC['type']);
             $servers->bind();
         }
         if($_GPC['type']=='qq'){
@@ -85,7 +85,7 @@ class Registers
         $appid=$config['appid'];
         $appsecret=$config['appsecret'];
         if($_GPC['type']=='weixin'){
-            $servers=new WeixinServers($appid,$appsecret);
+            $servers=new WeixinServers($appid,$appsecret,'weixin_open');
             $servers->unbind();
         }
         if($_GPC['type']=='qq'){
@@ -93,5 +93,5 @@ class Registers
             $servers->unbind();
         }
     }
-     
+
 }

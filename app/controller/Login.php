@@ -31,7 +31,7 @@ class Login extends Base
     /**
      * 获取配置信息
      */
-    public function getConf($modules, $file = "weixin")
+    public function getConf($modules, $file = "weixin_open")
     {
         $route = \Framework\library\conf::all('route');
         $conf = CALFBB . '/' . $route['DEFAULT_ADDONS'] . '/' . $modules . "/config/" . $file . ".conf";
@@ -59,7 +59,20 @@ class Login extends Base
             $modules = $data->data->modules;
             $this->assign('modules', $modules);
         }
-        $config['weixin'] = $this->getConf('login', 'weixin');
+        $config['weixin_open'] = $this->getConf('login', 'weixin_open');
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        if (!strpos($user_agent, 'MicroMessenger') === false) {//微信浏览器
+            $config['weixin_public'] = $this->getConf('login', 'weixin_public');
+            if($config['weixin_public']['WEIXIN_STATUS']=='on'){
+                $config['weixin']=$config['weixin_public'];
+            }else{
+                $config['weixin']=$config['weixin_open'];
+            }
+            
+        } else {
+            $config['weixin']=$config['weixin_open'];
+        }
+        
         $config['qq'] = $this->getConf('login', 'qq');
 
         $this->assign('config', $config);
@@ -84,7 +97,19 @@ class Login extends Base
             $modules = $data->data->modules;
             $this->assign('modules', $modules);
         }
-        $config['weixin'] = $this->getConf('login', 'weixin');
+        $config['weixin_open'] = $this->getConf('login', 'weixin_open');
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        if (!strpos($user_agent, 'MicroMessenger') === false) {//微信浏览器
+            $config['weixin_public'] = $this->getConf('login', 'weixin_public');
+            if($config['weixin_public']['WEIXIN_STATUS']=='on'){
+                $config['weixin']=$config['weixin_public'];
+            }else{
+                $config['weixin']=$config['weixin_open'];
+            }
+            
+        } else {
+            $config['weixin']=$config['weixin_open'];
+        }
         $config['qq'] = $this->getConf('login', 'qq');
 
         $this->assign('config', $config);
@@ -157,6 +182,7 @@ class Login extends Base
 
     public function siginin()
     {
+
         if($_POST['type'] == 'mobile') {
             if(self::$session->get('sms_code') != $_POST['vercode']) {
                 show_json(['code' => 2001, 'message' => '响应错误', 'data' => '验证码输入错误']);

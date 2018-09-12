@@ -76,22 +76,28 @@
 
       {% else %}
       <li class="layui-nav-item">
-          <a class="fly-nav-avatar" href="user-home-{{userinfo.uid}}.html">
+          <a class="fly-nav-avatar" href="{{SUFFIX}}user-home-{{userinfo.uid}}.html">
               <!--<a class="fly-nav-avatar" href="{{G.url('app/users/home',{'uid':userinfo.uid})}}">-->
           <cite class="layui-hide-xs">{{userinfo.username}}</cite>
           <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
           <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
+          {% if userinfo.registerinfo.type == 'weixin' %}
+          <img src="{{userinfo.registerinfo.weixin_avatar}}">
+          {% elseif userinfo.registerinfo.type == 'qq' %}
+          <img src="{{userinfo.registerinfo.qq_avatar}}">
+          {% else %}
           <img src="{{_G['ATTACHMENT_ROOT']}}/{{userinfo.avatar}}">
+          {% endif %}
         </a>
         <dl class="layui-nav-child">
-            <dd><a href="user-home-{{userinfo.uid}}.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
-            <dd><a href="user-index.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>帖子管理</a></dd>
-          <dd><a href="user-set-{{userinfo.uid}}.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
-          <dd><a href="user-message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+            <dd><a href="{{SUFFIX}}user-home-{{userinfo.uid}}.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+            <dd><a href="{{SUFFIX}}user-index.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>帖子管理</a></dd>
+          <dd><a href="{{SUFFIX}}user-set-{{userinfo.uid}}.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+          <dd><a href="{{SUFFIX}}user-message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
 
 
           <hr style="margin: 5px 0;">
-          <dd><a href="loginout.html" style="text-align: center;">退出</a></dd>
+          <dd><a href="{{SUFFIX}}loginout.html" style="text-align: center;">退出</a></dd>
         </dl>
       </li>
       {% endif %}

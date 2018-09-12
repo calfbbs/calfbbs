@@ -4,7 +4,7 @@
   <div class="fly-panel fly-panel-user" pad20>
     <div class="layui-tab layui-tab-brief" lay-filter="user">
       <ul class="layui-tab-title">
-        <li><a href="login.html">登入</a></li>
+        <li><a href="{{SUFFIX}}login.html">登入</a></li>
         <li class="layui-this">绑定账户</li>
       </ul>
       <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
@@ -55,6 +55,7 @@
               <input type="hidden" id="openid" name="openid" value="{{content.openid}}" class="layui-input">
               <input type="hidden" id="nickname" name="nickname" value="{{content.nickname}}" class="layui-input">
               <input type="hidden" id="type" name="type" value="{{content.type}}" class="layui-input">              
+              <input type="hidden" id="avatar" name="avatar" value="{{content.avatar}}" class="layui-input">            
           <!--    <div class="layui-form-item fly-form-app">
                 <span>或者直接使用社交账号快捷注册</span>
                 <a href="" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
@@ -125,12 +126,13 @@
             openid=$("#openid").val()
             nickname=$("#nickname").val()
             type=$("#type").val()
+            avatar=$("#avatar").val()
 
               $.ajax({
                   url:"{{G.url('app/registers/siginin')}}",//当前ajax请求的地址
                   type:'post',//请求的方式
                   async:true,//是否异步  默认为异步
-                  data:{openid:openid,nickname:nickname,type:type},//当前ajax请求的参数  
+                  data:{openid:openid,nickname:nickname,type:type,avatar:avatar},//当前ajax请求的参数  
                   dataType:"json",
                   success: function(data){//发送成功时的代码执行
                     console.log(data)
