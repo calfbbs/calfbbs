@@ -110,11 +110,14 @@ CREATE TABLE `#__oauth_user` (
   `uid` int(11) NOT NULL COMMENT 'user表uid',
   `weixin_openid` varchar(255) DEFAULT NULL COMMENT '微信openid',
   `weixin_nickname` varchar(255) DEFAULT NULL COMMENT '微信昵称',
+  `weixin_avatar` varchar(255) DEFAULT NULL,
   `qq_openid` varchar(255) DEFAULT NULL COMMENT 'qq openid',
   `qq_nickname` varchar(255) DEFAULT NULL COMMENT 'qq昵称',
+  `qq_avatar` varchar(255) DEFAULT NULL,
+  `mobile` int(12) DEFAULT NULL,
   `create_time` int(11) DEFAULT NULL COMMENT '建立时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `posts`
