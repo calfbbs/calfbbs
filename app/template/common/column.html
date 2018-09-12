@@ -5,7 +5,7 @@
       <li {% if cid==200000 %} class="layui-hide-xs layui-this" {% endif %}><a href="{{_G['APP_URL']}}">首页</a></li>
       {% for data in classifyList %}
       <!-- {% if data.level==1 %} -->
-      <li {% if data.id==cid %} class="layui-hide-xs layui-this" {% endif %}><a href="search-cid-{{data.id}}.html">{{data.name}}</a></li>
+      <li {% if data.id==cid %} class="layui-hide-xs layui-this" {% endif %}><a href="{{SUFFIX}}search-cid-{{data.id}}.html">{{data.name}}</a></li>
       <!--<li {% if data.id==cid %} class="layui-hide-xs layui-this" {% endif %}><a href="{{ G.url('app/search/search',{'cid':data.id})}}">{{data.name}}</a></li>-->
       <!-- {% endif %} -->
       {% endfor %}
@@ -18,17 +18,17 @@
       
       <!-- 用户登入后显示 -->
       {% if userinfo%}
-      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="user-index.html">我发表的贴</a></li>
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="{{SUFFIX}}user-index.html">我发表的贴</a></li>
       {%endif%}
      <!-- <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="./index.php?m=app&c=users&a=index#collection">我收藏的贴</a></li> -->
     </ul>
 
     <div class="fly-column-right layui-hide-xs"> 
       <span class="fly-search"><i class="layui-icon"></i></span> 
-      <a href="post-add.html" class="layui-btn">发表新帖</a>
+      <a href="{{SUFFIX}}post-add.html" class="layui-btn">发表新帖</a>
     </div> 
     <div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;"> 
-      <a href="post-add.html" class="layui-btn">发表新帖</a>
+      <a href="{{SUFFIX}}post-add.html" class="layui-btn">发表新帖</a>
     </div> 
   </div>
 </div>

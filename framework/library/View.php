@@ -27,6 +27,7 @@ trait View
         $this->assign['APP_URL']=$_G['APP_URL'];
         $this->assign['APP']=$_G['APP'];
         $this->assign['ROOT']=$_G['ROOT'];
+        $this->assign['SUFFIX']=@SUFFIX  ?  @SUFFIX  : "";
         /**
          * 配置路由
          */
