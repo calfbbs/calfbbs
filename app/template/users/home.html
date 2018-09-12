@@ -47,7 +47,7 @@
           {% if questionsList %}
             {% for data in questionsList %}
             <li>
-              <a href="detail-{{data.id}}.html" class="jie-title"> {{data.title}}</a>
+              <a href="{{SUFFIX}}detail-{{data.id}}.html" class="jie-title"> {{data.title}}</a>
               <i class="time_str">{{data.create_time}}</i>
               <em class="layui-hide-xs">{{data.visits_count}}阅/{{data.reply_count}}答</em>
             </li>
@@ -69,7 +69,7 @@
             <li>
             <p>
             <span class="time_str">{{data.create_time}}</span>
-            在<a href="detail-{{data.reid}}.html" target="_blank">{{data.title}}</a>中回答：
+            在<a href="{{SUFFIX}}detail-{{data.reid}}.html" target="_blank">{{data.title}}</a>中回答：
             </p>
             <div class="home-dacontent">
               {{ data.reply_text|e('html_attr') }}

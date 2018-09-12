@@ -16,6 +16,8 @@ class Base extends ApiModel
 {
     public static $userinfo="";
     public static $session;
+    public static $index;
+
     use View;
     public function __construct()
     {   global $_G;
@@ -41,6 +43,15 @@ class Base extends ApiModel
         $copyright=$calfbbs['COPYRIGHT'] ? $calfbbs['COPYRIGHT'] : "calfbbs 版权所有";
         $logo=$calfbbs['LOGO'] ? $calfbbs['LOGO'] : "logo.png";
         $nav = new NavModel();
+        $suffix=\Framework\library\conf::get('IDENX_SUFFIX',"route");
+
+        if($suffix){
+            define("SUFFIX","");
+
+        }else{
+            define("SUFFIX","/index.php/");
+        }
+
         /**
          * 获取导航列表
          */

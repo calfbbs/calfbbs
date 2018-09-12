@@ -117,7 +117,7 @@ class PostValidate extends BaseValidate
          */
         if (isset($this->data['status'])) {
             $validator
-                ->oneOf('0,1,2', '帖子状态有误')
+                ->oneOf('0,1,2,3', '帖子状态有误')
                 ->validate('status');
         }
 
