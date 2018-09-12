@@ -3,7 +3,7 @@
     <div class="fly-panel fly-panel-user" pad20>
         <div class="layui-tab layui-tab-brief" lay-filter="user">
             <ul class="layui-tab-title">
-                <li><a href="login.html">登入</a></li>
+                <li><a href="{{SUFFIX}}login.html">登入</a></li>
                 <li class="layui-this">找回密码</li>
             </ul>
             <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
@@ -17,7 +17,7 @@
                                layui-btn layui-btn-primary
                             {% endif %}
                              layui-btn-sm">通过邮箱找回</a>
-                            <a href="forget_mobile.html" class="
+                            <a href="{{SUFFIX}}forget_mobile.html" class="
                                 {% if type == true %}
                                 layui-btn
                                 {% else %}

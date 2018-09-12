@@ -80,6 +80,7 @@ class Detail  extends Base
         $this->assign('title',$title);
         $this->assign('keywords',$keywords);
         $this->assign('description',$description);
+
         $this->display('detail/index');
     }
 

@@ -276,10 +276,11 @@ class Post extends PostModel
         $result = $this->findPost($validateResult['id']);
         if ( !$result) {
             return $this->returnMessage(2001, '响应错误', ['id' => '该帖不存在']);
-        } else if ($result['status'] == 3) {
-            return $this->returnMessage(2001, '响应错误', ['id' => '该帖已删除']);
-
         }
+        //else if ($result['status'] == 3) {
+        //    return $this->returnMessage(2001, '响应错误', ['id' => '该帖已删除']);
+
+        //}
         return $this->returnMessage(1001, '响应成功', $result);
     }
 

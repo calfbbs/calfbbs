@@ -16,8 +16,8 @@
             {% for data in list %}
             <li id="data-{{ data.id }}" data-id="{{ data.id }}">
               <blockquote class="layui-elem-quote">
-                <a href="users-home-{{data.uid}}" target="_blank"><cite>{{ data.username }}</cite></a>在<a
-                      target="_blank" href="detail-{{data.posts_id}}"><cite>{{ data.posts_title
+                <a href="{{SUFFIX}}users-home-{{data.uid}}" target="_blank"><cite>{{ data.username }}</cite></a>在<a
+                      target="_blank" href="{{SUFFIX}}detail-{{data.posts_id}}"><cite>{{ data.posts_title
                 }}</cite></a>回复了消息
               </blockquote>
               <p>

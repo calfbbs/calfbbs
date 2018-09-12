@@ -18,9 +18,9 @@
           <ul class="mine-view jie-row">
             {% for data in postList.list %}
             <li>
-              <a class="jie-title" href="detail-{{data.id}}" target="_blank">{{data.title}}</a>
+              <a class="jie-title" href="{{SUFFIX}}detail-{{data.id}}" target="_blank">{{data.title}}</a>
               <i>{{data.create_time|date('Y-m-d H:i:s')}}</i>
-              <a class="mine-edit" href="post-edit',{{data.id}}" target="_blank">编辑</a>
+              <a class="mine-edit" href="{{SUFFIX}}post-edit',{{data.id}}" target="_blank">编辑</a>
               <em>{{data.visits_count}}阅/{{data.reply_count}}答</em>
             </li>
             {%endfor%}

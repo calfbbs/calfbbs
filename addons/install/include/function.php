@@ -11,7 +11,7 @@ function env_check(&$envTtems) {
     $envTtems[] = array('name' => 'GD库', 'min' => '2.0', 'good' => '2.0', 'cur' => $match[0], 'status' => ($match[0] < 2 ? 0:1));
     $envTtems[] = array('name' => '附件上传', 'min' => '未限制', 'good' => '2M','cur' => ini_get('upload_max_filesize'), 'status' => 1);
 	$disk_place = function_exists('disk_free_space') ? floor(disk_free_space(CALFBB) / (1024*1024)) : 0;
-    $envTtems[] = array('name' => '磁盘空间', 'min' => '100M', 'good' => '>100M','cur' => empty($disk_place) ? '未知' : $disk_place.'M', 'status' => $disk_place < 100 ? 0:1);
+  //  $envTtems[] = array('name' => '磁盘空间', 'min' => '100M', 'good' => '>100M','cur' => empty($disk_place) ? '未知' : $disk_place.'M', 'status' => $disk_place < 100 ? 0:1);
 }
 /**
  * file check

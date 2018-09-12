@@ -16,18 +16,18 @@
         <ul class="fly-list">
           {% for data in topPostList %}
           <li>
-            <a href="user-home-{{data.uid}}.html" class="fly-avatar">
+            <a href="{{SUFFIX}}user-home-{{data.uid}}.html" class="fly-avatar">
               <!--<a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-avatar">-->
 
               <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.avatar}}" alt="{{data.username}}">
             </a>
             <h2>
               <a class="layui-badge">{{data.cname}}</a>
-              <a href="detail-{{data.id}}.html">{{data.title}}</a>
+              <a href="{{SUFFIX}}detail-{{data.id}}.html">{{data.title}}</a>
               <!--<a href="{{ G.url('app/detail/index',{'id':data.id})}}">{{data.title}}</a>-->
             </h2>
             <div class="fly-list-info">
-              <a href="user-home-{{data.uid}}.html" link>
+              <a href="{{SUFFIX}}user-home-{{data.uid}}.html" link>
                 <!--<a href="{{ G.url('app/users/home',{'uid':data.uid})}}" link>-->
                 <cite>{{data.username}}</cite>
               <!--  <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
@@ -62,23 +62,23 @@
         
         <div class="fly-panel-title fly-filter">
           
-          <a href="search-4.html" class="layui-this" >综合</a>
+          <a href="{{SUFFIX}}search-4.html" class="layui-this" >综合</a>
           <span class="fly-mid"></span>
 
-          <a href="search-0.html" >未结</a>
+          <a href="{{SUFFIX}}search-0.html" >未结</a>
           <span class="fly-mid"></span>
           
-          <a href="search-1.html" >已结</a>
+          <a href="{{SUFFIX}}search-1.html" >已结</a>
           <span class="fly-mid"></span>
           
-          <a href="search-2.html" >精华</a>
+          <a href="{{SUFFIX}}search-2.html" >精华</a>
           <span class="fly-filter-right layui-hide-xs">
             
 
-            <a href="search-{{status}}-create_time.html" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>
+            <a href="{{SUFFIX}}search-{{status}}-create_time.html" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>
             <!--<a href="{{ G.url('app/search/search',{'status':status,'orderBy':'create_time'})}}" {% if orderBy=='create_time' %} class="layui-this" {% endif %}>按最新</a>-->
             <span class="fly-mid"></span>
-            <a href="search-{{status}}-reply_count.html" {% if orderBy=='reply_count' %} class="layui-this" {% endif %}>按热议</a>
+            <a href="{{SUFFIX}}search-{{status}}-reply_count.html" {% if orderBy=='reply_count' %} class="layui-this" {% endif %}>按热议</a>
             <!--<a href="{{ G.url('app/search/search',{'status':status,'orderBy':'reply_count'})}}" {% if orderBy=='reply_count' %} class="layui-this" {% endif %}>按热议</a>-->
           </span>
         </div>
@@ -86,16 +86,16 @@
         <ul class="fly-list"> 
           {% for data in comprehensivePostList %}         
           <li>
-            <a href="user-home-{{data.uid}}.html" class="fly-avatar">
+            <a href="{{SUFFIX}}user-home-{{data.uid}}.html" class="fly-avatar">
               <!--<a href="{{ G.url('app/users/home',{'uid':data.uid})}}" class="fly-avatar">-->
               <img src="{{_G['ATTACHMENT_ROOT']}}/{{data.avatar}}" alt="{{data.username}}">
             </a>
             <h2>
               <a class="layui-badge">{{data.cname}}</a>
-              <a href="detail-{{data.id}}.html">{{data.title}}</a>
+              <a href="{{SUFFIX}}detail-{{data.id}}.html">{{data.title}}</a>
             </h2>
             <div class="fly-list-info">
-              <a href="user-home-{{data.uid}}.html" link>
+              <a href="{{SUFFIX}}user-home-{{data.uid}}.html" link>
                 <cite>{{data.username}}</cite>
                 <!--
                 <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
@@ -118,7 +118,7 @@
         </ul>
         <div style="text-align: center">
           <div class="laypage-main">
-            <a href="search.html" class="laypage-next">更多求解</a>
+            <a href="{{SUFFIX}}search.html" class="laypage-next">更多求解</a>
           </div>
         </div>
 
@@ -131,7 +131,7 @@
         <dt class="fly-panel-title">一周热议</dt>
         {% for data in hotPostList %} 
         <dd>
-          <a href="detail-{{data.id}}.html">{{data.title}}</a>
+          <a href="{{SUFFIX}}detail-{{data.id}}.html">{{data.title}}</a>
           <span><i class="iconfont icon-pinglun1"></i> {{data.reply_count}}</span>
         </dd>
         {% endfor %}
@@ -150,7 +150,7 @@
         {% for data in firstList %}
           {% if data.type==1 %}
           <div class="fly-panel-main">
-            <a href="{{data.url_path}}" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">{{data.name}}</a>
+            <a href="{{SUFFIX}}{{data.url_path}}" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">{{data.name}}</a>
           </div>
           {% else %}
             <div class="fly-panel-main">
