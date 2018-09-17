@@ -47,7 +47,7 @@ class QQServers extends RegisterServers{
     public function bind(){
         global $_GPC;
         //$redirect_uri="http://www.wuhaomouse.com/index.php?m=app&c=registers&a=bind&uid=".$_GPC['uid']."&type=".$this->type;
-        $redirect_uri=url("app/registers/bind",['uid'=>$_GPC['uid'],'type'=>$this->type]);
+        $redirect_uri=url("app/registers/bind",['type'=>$this->type,'uid'=>$_GPC['uid']]);
         @$code=$_GET['code'];
         if($code){
         	$state=self::$session->get('qq_state');        	
@@ -68,7 +68,9 @@ class QQServers extends RegisterServers{
 	            	$udata['id']=$data['id'];	
 		            $wdata=$this->post(url("login/register/updateregister"),$udata);
 		            if($wdata->code==1001){ 
-		                $this->success(url("app/users/set",['uid'=>$uid]), '绑定成功。');         
+		                //$this->success(url("app/users/set",['uid'=>$uid]), '绑定成功。');  
+                        header("location: ".url("app/index/index"));
+                        exit();           
 		            }
 	        	}else{	        		
 	            	
@@ -78,7 +80,9 @@ class QQServers extends RegisterServers{
                     }else{
     	        		$wdata=$this->post(url("login/register/addregister"),$wdata);
     		            if($wdata->code==1001){ 
-    		                $this->success(url("app/users/set",['uid'=>$uid]), '绑定成功。');         
+    		                //$this->success(url("app/users/set",['uid'=>$uid]), '绑定成功。');    
+                            header("location: ".url("app/index/index"));
+                            exit();        
     		            } 
                     }
 	        	}
@@ -104,11 +108,14 @@ class QQServers extends RegisterServers{
                 $openid=$this->getOpenid($code,$redirect_uri);
                 $content=$this->getUserinfo($openid);
                 $content->openid=$openid;
+                $content->avatar=$content->figureurl_qq_1;
                 $register=new RegisterModel();
-		$data=$register->getRegisterOne(['type'=>$this->type,'openid'=>$content->openid]);
+                $registerinfo=$register->getRegisterOne(['type'=>$this->type,'openid'=>$content->openid]);
+                
 
-                if($data){
-                    $uid=$data['uid'];
+                if($registerinfo){
+                    $registerinfo['type']=$this->type;
+                    $uid=$registerinfo['uid'];
                     $user_m=new UserModel();
                     $data=$user_m->getUserOne($uid);
                     if($data){
@@ -116,11 +123,15 @@ class QQServers extends RegisterServers{
                         $user['type']='register';
                         $user['uid']=$uid;
                         $data=$this->post(url("api/user/login"),$user);
-                        if($data->code==1001){
+                        if($data->code==1001){                            
+                            $data->data->registerinfo=$registerinfo;
+
                             @$access_token=md5($this->randomkeys(6)+$data->data->uid);
                             $access_token=self::$session->set('access_token',$access_token);
                             $userinfo=self::$session->set($access_token,(array)$data->data);
-                            $this->success(url("app/index/index"), '用户已注册过，登录成功'); 
+                            //$this->success(url("app/index/index"), '用户已注册过，登录成功'); 
+                            header("location: ".url("app/index/index"));
+        					exit();
                         }
                     }
                 }else{

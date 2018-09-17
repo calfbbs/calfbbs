@@ -48,7 +48,10 @@ class RegisterServers extends Base{
         
         /**
          * 获取配置头像目录
-         */        
+         */      
+        if(isset($_POST['avatar'])){
+            $avatar_ori=$_POST['avatar'];
+        }  
         $avatar=\framework\library\Conf::get('AVATAR','calfbbs');
         if(!$avatar){
             $avatar='default';
@@ -56,12 +59,23 @@ class RegisterServers extends Base{
         $jpg="boy".rand(1,10).".jpg";
         $_POST['avatar']="avatar/".$avatar."/".$jpg;
         $num=$this->randomkeys(3);
-        if(!$_POST['username']){
+        if(!isset($_POST['username'])){
         	$_POST['username']=$this->filterEmoji($_POST['nickname']).$num;
     	}
+        if(isset($_POST['type'])){
+            if(($_POST['type']=='weixin_public') || ($_POST['type']=='weixin_open')){
+                $_POST['type']='weixin';
+                $type='weixin';
+            }else{
+                $type=$_POST['type'];
+            }
+        }
         $data=$this->post(url("api/user/adduser"),$_POST);
 
         if($data->code==1001){
+            if(isset($avatar_ori)){
+                $_POST['avatar']=$avatar_ori;
+            }
             $_POST['uid']=$data->data;
             $data=$this->post(url("login/register/addRegister"),$_POST);            
             if($data->code==1001){
@@ -76,6 +90,11 @@ class RegisterServers extends Base{
                 $data=$this->post(url("api/user/login"),$_POST);
                 //$this->logger("registers :\n".json_encode($data));
                 if($data->code==1001){
+                    $register=new RegisterModel();
+                    $registerinfo=$register->getRegisterOne(['type'=>'uid','uid'=>$data->data->uid]);
+                    $registerinfo['type']=$type;
+                    $data->data->registerinfo=$registerinfo;
+
                     @$access_token=md5($this->randomkeys(6)+$data->data->uid);
                     $access_token=self::$session->set('access_token',$access_token);
                     $userinfo=self::$session->set($access_token,(array)$data->data);

@@ -81,7 +81,13 @@
           <cite class="layui-hide-xs">{{userinfo.username}}</cite>
           <!--<i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
           <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
+          {% if userinfo.registerinfo.type == 'weixin' %}
+          <img src="{{userinfo.registerinfo.weixin_avatar}}">
+          {% elseif userinfo.registerinfo.type == 'qq' %}
+          <img src="{{userinfo.registerinfo.qq_avatar}}">
+          {% else %}
           <img src="{{_G['ATTACHMENT_ROOT']}}/{{userinfo.avatar}}">
+          {% endif %}
         </a>
         <dl class="layui-nav-child">
             <dd><a href="{{SUFFIX}}user-home-{{userinfo.uid}}.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>

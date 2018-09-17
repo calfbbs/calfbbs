@@ -47,7 +47,7 @@
                 <a href="{{G.url('app/registers/login',{'type':'qq'})}}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
                 {% endif %}
                 {% if config['weixin']['WEIXIN_STATUS'] == 'on' %}
-                <a href="{{G.url('app/registers/login',{'type':'weixin'})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" class="mine-icon" title="微信登入"><i class="mine-icon" style="font-size: 20px;color:green;">&#xe628;</i></a>
+                <a href="{{G.url('app/registers/login',{'type':config['weixin']['type']})}}" onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.1, time:0})" class="mine-icon" title="微信登入"><i class="mine-icon" style="font-size: 20px;color:green;">&#xe628;</i></a>
                 {% endif %}
               </div>
               {% endif %} 
