@@ -1,3 +1,5 @@
+**/.DS_Store
+.idea/
 data/cache
 data/install.lock
 database.php
