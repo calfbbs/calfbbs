@@ -1,4 +1,4 @@
-# calfbbs V2.0
+# calfbbs v2.0
 
 - 官网：http://www.calfbbs.cn
 - 演示站点：http://s.calfbb.com
